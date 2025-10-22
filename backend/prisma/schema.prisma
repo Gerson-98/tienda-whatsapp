@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- MODELOS DE NUESTRA APLICACIÓN ---
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  products  Product[] // Relación: una categoría tiene muchos productos
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String? // El '?' significa que es opcional
+  price       Float
+  imageUrl    String? // Opcional
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relación con Category
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+}
+
+model ProjectCategory {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  projects Project[]
+}
+
+// --- CAMBIO CLAVE: El modelo Project ahora tiene su propia imageUrl ---
+model Project {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  imageUrl    String?  // <-- AÑADIMOS ESTO
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relación con ProjectCategory
+  projectCategoryId String
+  projectCategory   ProjectCategory @relation(fields: [projectCategoryId], references: [id])
+}
