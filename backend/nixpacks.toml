@@ -1,0 +1,11 @@
+# backend/nixpacks.toml
+
+# Le decimos a Nixpacks qué fases queremos configurar
+[phases.build]
+# Usamos el instalador 'npm'
+dependsOn = ["install"]
+
+# Definimos variables de entorno específicas para el build
+[variables]
+# ¡Esta es la línea clave! Forzamos la versión 18 de Node.js para el build.
+NODE_VERSION = "18"
