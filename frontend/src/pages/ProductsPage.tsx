@@ -1,6 +1,8 @@
 // frontend/src/pages/ProductsPage.tsx
 
 import { useState, useEffect } from "react";
+import.meta.env.VITE_API_UR;
+
 import {
   Card,
   CardContent,
@@ -49,7 +51,7 @@ export const ProductsPage = () => {
 
         try {
           const response = await fetch(
-            `http://localhost:3000/products?${params.toString()}`
+            `${import.meta.env.VITE_API_URL}/products?${params.toString()}`
           );
           if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 

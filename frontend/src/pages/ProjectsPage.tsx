@@ -1,6 +1,7 @@
 // src/pages/ProjectsPage.tsx
 
 import React, { useState, useEffect } from "react";
+import.meta.env.VITE_API_UR;
 import {
   Card,
   CardContent,
@@ -59,7 +60,9 @@ export const ProjectsPage = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:3000/projects");
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/projects`
+        );
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         const data: Project[] = await response.json();
         setAllProjects(data);
