@@ -1,5 +1,6 @@
 // frontend/src/pages/ProductsPage.tsx
 
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -7,19 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState, useEffect } from "react";
 import { MotionItem, MotionSection } from "@/components/motion/FadeInSection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { Input } from "@/components/ui/input"; // <-- Para la barra de búsqueda
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // <-- Para ordenar
+} from "@/components/ui/select";
 
 type Product = {
   id: string;
@@ -35,44 +35,48 @@ export const ProductsPage = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [isLoading, setIsLoading] = useState(true);
-
-  // --- CAMBIO 1: Nuevos estados para búsqueda y ordenamiento ---
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name_asc");
 
-  // --- CAMBIO 2: El useEffect ahora se ejecuta cuando cambian los filtros ---
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
       const params = new URLSearchParams();
-      if (searchTerm) params.append("search", searchTerm);
-      if (sortBy) params.append("sortBy", sortBy);
+      // Usamos un 'debounce' para no hacer una petición en cada tecla
+      const debounceTimer = setTimeout(async () => {
+        if (searchTerm) params.append("search", searchTerm);
+        if (sortBy) params.append("sortBy", sortBy);
 
-      try {
-        const response = await fetch(
-          `http://localhost:3000/products?${params.toString()}`
-        );
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        try {
+          const response = await fetch(
+            `http://localhost:3000/products?${params.toString()}`
+          );
+          if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
-        const data: Product[] = await response.json();
-        setAllProducts(data);
+          const data: Product[] = await response.json();
+          setAllProducts(data);
 
-        // Solo actualizamos las categorías la primera vez para que no desaparezcan al buscar
-        if (categories.length === 0) {
-          const uniqueCategories = [
-            "Todos",
-            ...new Set(data.map((p) => p.category.name)),
-          ];
-          setCategories(uniqueCategories);
+          // Actualizamos las categorías solo si no están cargadas
+          if (categories.length <= 1) {
+            // <= 1 para contar "Todos"
+            const uniqueCategories = [
+              "Todos",
+              ...new Set(data.map((p) => p.category.name)),
+            ];
+            setCategories(uniqueCategories);
+          }
+        } catch (error) {
+          console.error("Error al obtener los productos:", error);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        console.error("Error al obtener los productos:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      }, 300); // Espera 300ms después de que el usuario deja de escribir
+
+      return () => clearTimeout(debounceTimer);
     };
+
     fetchProducts();
-  }, [searchTerm, sortBy]); // Se actualiza al buscar u ordenar
+  }, [searchTerm, sortBy]);
 
   const filteredProducts =
     activeCategory === "Todos"
@@ -105,6 +109,7 @@ export const ProductsPage = () => {
       </div>
 
       <div className="container py-20">
+        {/* Controles de Búsqueda y Ordenamiento (Sin cambios) */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <Input
             placeholder="Buscar por nombre..."
@@ -124,10 +129,27 @@ export const ProductsPage = () => {
           </Select>
         </div>
 
+        {/* --- CAMBIO CLAVE: Restauramos los botones de filtro por categoría --- */}
+        <div className="flex justify-center flex-wrap gap-4 mb-12">
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={activeCategory === category ? "default" : "secondary"}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+            </Button>
+          ))}
+        </div>
+
+        {/* Galería de Productos (Sin cambios) */}
         {isLoading ? (
           <div className="text-center">Cargando productos...</div>
         ) : (
-          <MotionSection key={activeCategory} animateOnLoad={true}>
+          <MotionSection
+            key={activeCategory + searchTerm + sortBy}
+            animateOnLoad={true}
+          >
             <AnimatePresence>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredProducts.map((product) => (
@@ -145,7 +167,6 @@ export const ProductsPage = () => {
                         <p className="text-muted-foreground mt-2 text-sm">
                           {product.description}
                         </p>
-                        {/* --- Aquí se muestra el precio que viene del backend --- */}
                         <p className="text-2xl font-bold text-primary mt-4">
                           {formatPrice(product.price)}
                         </p>
@@ -164,7 +185,7 @@ export const ProductsPage = () => {
         )}
       </div>
 
-      {/* CALL TO ACTION (Sin cambios) */}
+      {/* CTA (Sin cambios) */}
       <div className="bg-muted">
         <MotionSection className="container py-20 text-center">
           <MotionItem>
