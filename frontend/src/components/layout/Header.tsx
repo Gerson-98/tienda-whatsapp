@@ -1,3 +1,6 @@
+// src/components/layout/Header.tsx
+
+import { useState, useEffect } from "react"; // <-- 1. Importamos los hooks de React
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
@@ -14,7 +17,6 @@ const NavLinks = ({ className }: { className?: string }) => (
     <Link to="/productos" className="transition-opacity hover:opacity-80">
       Productos
     </Link>
-    {/* --- CAMBIA ESTA LÍNEA --- */}
     <Link to="/nosotros" className="transition-opacity hover:opacity-80">
       Nosotros
     </Link>
@@ -25,15 +27,48 @@ const NavLinks = ({ className }: { className?: string }) => (
 );
 
 export const Header = () => {
+  // --- 2. Lógica para detectar el scroll ---
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Si el scroll vertical es mayor a 10px, cambiamos el estado
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    // Añadimos el listener cuando el componente se monta
+    window.addEventListener("scroll", handleScroll);
+
+    // Limpiamos el listener cuando el componente se desmonta
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // El array vacío asegura que esto se ejecute solo una vez
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent text-white transition-all duration-300">
-      <div className="container mx-auto flex h-16 items-center justify-between">
+    // --- 3. Aplicamos clases condicionales para el efecto cristal ---
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-background/80 backdrop-blur-sm shadow-lg text-foreground"
+          : "bg-transparent text-white"
+      }`}
+    >
+      {/* --- 4. Hacemos el contenedor relativo para centrar la navegación --- */}
+      <div className="container mx-auto flex h-16 items-center justify-between relative">
         <Link to="/" className="text-2xl font-bold">
           Vent<span className="text-primary">Pro</span>
         </Link>
-        <nav className="hidden md:flex">
+
+        {/* --- 5. Centramos la navegación de escritorio de forma absoluta --- */}
+        <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <NavLinks />
         </nav>
+
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
