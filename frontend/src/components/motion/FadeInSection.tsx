@@ -1,51 +1,63 @@
-import React from "react";
-import { motion } from "framer-motion";
+// src/components/motion/FadeInSection.tsx
 
-const fadeInStagger = {
-  hidden: { opacity: 0, y: 50 },
+import React, { useRef } from "react";
+import { motion, useInView, Variants } from "framer-motion"; // <-- Importamos 'Variants'
+
+interface FadeInSectionProps {
+  children: React.ReactNode;
+  className?: string;
+  animateOnLoad?: boolean;
+}
+
+// --- CAMBIO CLAVE: Tipamos explícitamente las variantes ---
+const sectionVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       type: "spring",
-      stiffness: 90,
-      staggerChildren: 0.15,
+      stiffness: 100,
+      staggerChildren: 0.2,
     },
   },
 };
 
-interface MotionSectionProps {
-  children: React.ReactNode;
-  className?: string;
-  animateOnLoad?: boolean; // <-- Nueva prop opcional
-}
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export const MotionSection = ({
   children,
   className,
   animateOnLoad = false,
-}: MotionSectionProps) => {
-  // <-- Valor por defecto es false
+}: FadeInSectionProps) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
   return (
     <motion.div
+      ref={ref}
       className={className}
-      variants={fadeInStagger}
+      variants={sectionVariants} // <-- Usamos las variantes tipadas
       initial="hidden"
-      // --- Lógica condicional para el trigger ---
-      animate={animateOnLoad ? "visible" : undefined} // Anima al cargar si es true
-      whileInView={!animateOnLoad ? "visible" : undefined} // Anima al ver si es false
-      // --- Lógica condicional para la repetición ---
-      viewport={{ once: animateOnLoad, amount: 0.2 }} // Repite solo si NO es animateOnLoad
+      animate={animateOnLoad || isInView ? "visible" : "hidden"}
     >
       {children}
     </motion.div>
   );
 };
 
-// MotionItem no necesita cambios
-export const MotionItem = ({ children, className }: MotionSectionProps) => {
+export const MotionItem = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
-    <motion.div variants={fadeInStagger} className={className}>
+    <motion.div className={className} variants={itemVariants}>
       {children}
     </motion.div>
   );

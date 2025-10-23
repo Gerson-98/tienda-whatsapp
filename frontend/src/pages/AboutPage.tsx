@@ -1,6 +1,5 @@
 // src/pages/AboutPage.tsx
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Gem, Lightbulb, Users } from "lucide-react"; // Iconos para nuestros valores
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -8,23 +7,6 @@ import { Link } from "react-router-dom";
 import { MotionItem, MotionSection } from "@/components/motion/FadeInSection";
 
 // Datos ficticios para el equipo (sin cambios)
-const teamMembers = [
-  {
-    name: "Carlos Valdés",
-    role: "Fundador y Director General",
-    imageUrl: "/images/team/founder.jpg",
-  },
-  {
-    name: "Ana Rivas",
-    role: "Jefa de Proyectos",
-    imageUrl: "/images/team/manager.jpg",
-  },
-  {
-    name: "Luis Fernandez",
-    role: "Técnico Especialista",
-    imageUrl: "/images/team/technician.jpg",
-  },
-];
 
 export const AboutPage = () => {
   return (

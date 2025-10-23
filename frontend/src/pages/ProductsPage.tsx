@@ -1,6 +1,5 @@
 // frontend/src/pages/ProductsPage.tsx
 
-import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -8,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useState, useEffect } from "react";
 import { MotionItem, MotionSection } from "@/components/motion/FadeInSection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
