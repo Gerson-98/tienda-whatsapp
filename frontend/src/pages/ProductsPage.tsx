@@ -1,8 +1,6 @@
 // frontend/src/pages/ProductsPage.tsx
 
 import { useState, useEffect } from "react";
-import.meta.env.VITE_API_UR;
-
 import {
   Card,
   CardContent,

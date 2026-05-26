@@ -1,9 +1,9 @@
 // src/components/layout/FloatingWhatsApp.tsx
 
-import { FaWhatsapp } from "react-icons/fa"; // Necesitarás instalar react-icons
+import { FaWhatsapp } from "react-icons/fa";
 
 export const FloatingWhatsApp = () => {
-  const phoneNumber = "50241916647"; // Tu número de teléfono
+  const phoneNumber = import.meta.env.VITE_WHATSAPP_NUMBER ?? "50241916647";
   const message =
     "Hola, estoy interesado en sus servicios de ventanas de PVC y me gustaría obtener más información.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(

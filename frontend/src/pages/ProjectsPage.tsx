@@ -1,38 +1,27 @@
-// src/pages/ProjectsPage.tsx
+// frontend/src/pages/ProjectsPage.tsx
 
 import React, { useState, useEffect } from "react";
-import.meta.env.VITE_API_UR;
+import { client, urlFor } from "@/sanityClient";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import { MotionItem, MotionSection } from "@/components/motion/FadeInSection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-// --- CAMBIO 1: Consolidamos todas las importaciones de 'framer-motion' en una sola línea ---
 import {
   motion,
-  AnimatePresence,
   useInView,
   animate,
   useTransform,
   useMotionValue,
+  AnimatePresence,
 } from "framer-motion";
 
-type Project = {
-  id: string;
-  name: string;
-  description: string | null;
-  imageUrl: string | null;
-  projectCategory: {
-    name: string;
-  };
-};
-
-// --- CAMBIO 2: Movemos el componente AnimatedCounter fuera de ProjectsPage (mejor práctica) ---
+// --- Componente de ayuda para los números animados (Sin cambios) ---
 const AnimatedCounter = ({ to }: { to: number }) => {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) =>
@@ -51,39 +40,62 @@ const AnimatedCounter = ({ to }: { to: number }) => {
   return <motion.span ref={ref}>{rounded}</motion.span>;
 };
 
+// --- Tipos para los datos de Sanity (Sin cambios) ---
+type Project = {
+  _id: string;
+  name: string;
+  description: string;
+  imageUrl: any;
+  categoryName: string | null;
+};
+type Category = {
+  _id: string;
+  name: string;
+};
+
 export const ProjectsPage = () => {
   const [allProjects, setAllProjects] = useState<Project[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]); // Estado separado para los proyectos mostrados
   const [isLoading, setIsLoading] = useState(true);
 
+  // Efecto para obtener los datos de Sanity una sola vez al cargar la página
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchAllData = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/projects`
-        );
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-        const data: Project[] = await response.json();
-        setAllProjects(data);
-        const uniqueCategories = [
-          "Todos",
-          ...new Set(data.map((p) => p.projectCategory.name)),
-        ];
-        setCategories(uniqueCategories);
+        const projectsQuery = `*[_type == "project"]{_id, name, description, imageUrl, "categoryName": category->name} | order(_createdAt asc)`;
+        const categoriesQuery = `*[_type == "projectCategory"]{_id, name} | order(name asc)`;
+
+        const [sanityProjects, sanityCategories] = await Promise.all([
+          client.fetch(projectsQuery),
+          client.fetch(categoriesQuery),
+        ]);
+
+        setAllProjects(sanityProjects);
+        setCategories(sanityCategories);
       } catch (error) {
-        console.error("Error al obtener los proyectos:", error);
+        console.error("Error al obtener los datos de Sanity:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchProjects();
+    fetchAllData();
   }, []);
 
-  const filteredProjects =
-    activeCategory === "Todos"
-      ? allProjects
-      : allProjects.filter((p) => p.projectCategory.name === activeCategory);
+  // --- LÓGICA DE FILTRADO MEJORADA Y ROBUSTA ---
+  // Este efecto se ejecuta cada vez que cambia la categoría activa o la lista principal de proyectos.
+  useEffect(() => {
+    if (activeCategory === "Todos") {
+      setFilteredProjects(allProjects);
+    } else {
+      const filtered = allProjects.filter(
+        (project) => project.categoryName === activeCategory
+      );
+      setFilteredProjects(filtered);
+    }
+  }, [activeCategory, allProjects]);
 
   return (
     <main className="-mt-16">
@@ -102,7 +114,7 @@ export const ProjectsPage = () => {
         </div>
       </div>
 
-      {/* SECCIÓN ESTADÍSTICAS (Con los números correctos) */}
+      {/* SECCIÓN ESTADÍSTICAS (Sin cambios) */}
       <div className="bg-muted">
         <MotionSection className="container py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -138,60 +150,85 @@ export const ProjectsPage = () => {
         </MotionSection>
       </div>
 
-      {/* SECCIÓN FILTROS Y GALERÍA (Sin cambios) */}
+      {/* SECCIÓN GALERÍA Y FILTROS */}
       <div className="container py-20">
-        {isLoading ? (
-          <div className="text-center">Cargando proyectos...</div>
-        ) : (
-          <>
-            <div className="flex justify-center flex-wrap gap-4 mb-12">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={
-                    activeCategory === category ? "default" : "secondary"
-                  }
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
-            <MotionSection key={activeCategory} animateOnLoad={true}>
-              <AnimatePresence>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredProjects.map((project) => (
-                    <MotionItem key={project.id}>
-                      <Card className="overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col">
-                        <CardHeader className="p-0">
-                          <img
-                            src={project.imageUrl || "/images/placeholder.png"}
-                            alt={project.name}
-                            className="w-full h-64 object-cover"
-                          />
-                        </CardHeader>
-                        <CardContent className="p-6 flex-grow">
-                          <CardTitle>{project.name}</CardTitle>
-                          <p className="text-muted-foreground mt-2 text-sm">
-                            {project.description}
-                          </p>
-                        </CardContent>
-                        <CardFooter className="p-6 pt-0">
-                          <Button asChild className="w-full">
-                            <Link to="/cotizacion">Cotizar este estilo</Link>
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    </MotionItem>
-                  ))}
-                </div>
-              </AnimatePresence>
-            </MotionSection>
-          </>
+        {!isLoading && (
+          <div className="flex justify-center flex-wrap gap-4 mb-12">
+            <Button
+              variant={activeCategory === "Todos" ? "default" : "secondary"}
+              onClick={() => setActiveCategory("Todos")}
+            >
+              Todos
+            </Button>
+            {categories.map((category) => (
+              <Button
+                key={category._id}
+                variant={
+                  activeCategory === category.name ? "default" : "secondary"
+                }
+                onClick={() => setActiveCategory(category.name)}
+              >
+                {category.name}
+              </Button>
+            ))}
+          </div>
         )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <AnimatePresence>
+            {isLoading ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <Card key={index} className="overflow-hidden">
+                  <div className="h-64 bg-muted animate-pulse" />
+                  <CardHeader>
+                    <div className="h-6 w-3/4 bg-muted animate-pulse rounded-md" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-4 w-full bg-muted animate-pulse rounded-md mb-2" />
+                    <div className="h-4 w-1/2 bg-muted animate-pulse rounded-md" />
+                  </CardContent>
+                </Card>
+              ))
+            ) : filteredProjects.length > 0 ? (
+              filteredProjects.map((project) => (
+                <MotionItem key={project._id}>
+                  <Card className="overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col">
+                    <CardHeader className="p-0">
+                      {project.imageUrl && (
+                        <img
+                          src={urlFor(project.imageUrl)
+                            .width(400)
+                            .height(300)
+                            .url()}
+                          alt={project.name}
+                          className="w-full h-64 object-cover"
+                        />
+                      )}
+                    </CardHeader>
+                    <CardContent className="p-6 flex-grow">
+                      <CardTitle>{project.name}</CardTitle>
+                      <p className="text-muted-foreground mt-2 text-sm">
+                        {project.description}
+                      </p>
+                    </CardContent>
+                    <CardFooter className="p-6 pt-0">
+                      <Button asChild className="w-full">
+                        <Link to="/cotizacion">Cotizar este estilo</Link>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </MotionItem>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10 text-muted-foreground">
+                <p>No hay proyectos para mostrar en esta categoría.</p>
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
-      {/* --- CAMBIO 3: Restauramos la sección "Call to Action" y eliminamos las estadísticas duplicadas --- */}
+      {/* SECCIÓN CALL TO ACTION (Sin cambios) */}
       <div className="bg-muted">
         <MotionSection className="container py-20 text-center">
           <MotionItem>

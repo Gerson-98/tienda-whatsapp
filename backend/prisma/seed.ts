@@ -1,11 +1,29 @@
 // backend/prisma/seed.ts
 
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('Iniciando el seeding...');
+  // --- 2. ENCRIPTAR LA CONTRASEÑA ---
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash('admin123', saltRounds);
+
+  // --- 3. CREAR EL USUARIO ADMINISTRADOR ---
+  // upsert: si ya existe un admin con ese username, no hace nada. Si no, lo crea.
+  const admin = await prisma.admin.upsert({
+    where: { username: 'admin' },
+    update: {},
+    create: {
+      username: 'admin',
+      password: hashedPassword,
+    },
+  });
+  console.log(
+    `🔑 Usuario administrador '${admin.username}' creado/verificado.`,
+  );
 
   // ==========================================================
   // ===          SECCIÓN DE CATEGORÍAS Y PRODUCTOS         ===

@@ -51,3 +51,20 @@ model Project {
   projectCategoryId String
   projectCategory   ProjectCategory @relation(fields: [projectCategoryId], references: [id])
 }
+model Submission {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  message      String
+  projectType  String?  // <-- AÑADE ESTA LÍNEA
+  type         String
+  status      String   @default("NUEVO")
+  createdAt    DateTime @default(now())
+}
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique // El nombre de usuario debe ser único
+  password  String   // Aquí guardaremos la contraseña encriptada
+  createdAt DateTime @default(now())
+}

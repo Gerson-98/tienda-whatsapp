@@ -8,19 +8,25 @@ import { ProductsPage } from "@/pages/ProductsPage";
 import { AboutPage } from "@/pages/AboutPage"; // <-- 1. Importa la nueva página
 import { QuotePage } from "@/pages/QuotePage";
 import { ContactPage } from "@/pages/ContactPage"; // <-- 1. Importa la nueva página
+import { LoginPage } from "@/pages/LoginPage";
+import { AdminDashboard } from "@/pages/AdminDashboard";
 
 function App() {
   return (
     <Routes>
+      {/* Rutas Públicas */}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="proyectos" element={<ProjectsPage />} />
         <Route path="productos" element={<ProductsPage />} />
-        {/* --- 2. AÑADE ESTA LÍNEA --- */}
         <Route path="nosotros" element={<AboutPage />} />
-        <Route path="cotizacion" element={<QuotePage />} />
         <Route path="contacto" element={<ContactPage />} />
+        <Route path="cotizacion" element={<QuotePage />} />
       </Route>
+
+      {/* Rutas de Administrador */}
+      <Route path="/admin/login" element={<LoginPage />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
     </Routes>
   );
 }
