@@ -31,7 +31,8 @@ export class ApiError extends Error {
     message: string,
     options?: { status?: number; payload?: unknown; cause?: unknown }
   ) {
-    super(message, options?.cause !== undefined ? { cause: options.cause } : undefined);
+    super(message);
+if (options?.cause !== undefined) Object.defineProperty(this, 'cause', { value: options.cause });
     this.name = "ApiError";
     this.kind = kind;
     this.status = options?.status;
