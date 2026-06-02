@@ -1,5 +1,7 @@
 import React from "react";
 import Autoplay from "embla-carousel-autoplay";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -19,7 +21,7 @@ export const HeroCarousel = () => {
   ];
 
   return (
-    <section className="relative h-[70vh] sm:h-[89vh] w-full overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden flex items-center">
       <Carousel
         className="absolute inset-0 w-full h-full"
         opts={{ loop: true }}
@@ -31,29 +33,48 @@ export const HeroCarousel = () => {
               <img
                 src={src}
                 alt={`Proyecto de Ventanas de PVC ${index + 1}`}
-                // --- CAMBIO CLAVE AQUÍ: Añadimos 'block' ---
-                className="w-full h-full object-cover block"
+                className="w-full h-full object-cover block min-h-screen"
               />
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
 
-      <div className="absolute inset-0 bg-black/60 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black/80 z-10" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent z-10" />
 
-      <div className="absolute inset-0 flex items-center justify-center text-center text-white p-4 z-20">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-            Diseño y Eficiencia en Ventanas de PVC
+      <div className="container relative z-20 mx-auto text-white">
+        <div className="max-w-3xl flex flex-col gap-6">
+          <span className="relative inline-flex items-center gap-2 self-start rounded-full bg-secondary/20 text-secondary px-4 py-1 text-sm font-medium backdrop-blur-sm border border-secondary/30 mb-4">
+            🏆 +200 proyectos en Guatemala
+          </span>
+          <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl leading-none tracking-tighter">
+            Diseño y eficiencia en{" "}
+            <span className="bg-gradient-to-r from-secondary to-amber-200 bg-clip-text text-transparent">
+              ventanas premium
+            </span>
           </h1>
-          <p className="mt-6 text-lg max-w-3xl mx-auto leading-8 text-white/90">
-            Transformamos tu hogar con soluciones modernas, duraderas y de alto
-            aislamiento térmico y acústico.
+          <p className="text-lg md:text-xl text-white/80 font-light max-w-xl leading-relaxed">
+            Transformamos tu espacio con soluciones modernas, duraderas y de
+            alto aislamiento térmico y acústico.
           </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Button size="lg">Solicitar Cotización</Button>
-            <Button size="lg" variant="secondary">
-              Ver Proyectos
+          <div className="mt-4 flex flex-wrap items-center gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-full px-8 py-6 text-base font-medium"
+            >
+              <Link to="/cotizacion">
+                Solicitar Cotización <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full px-8 py-6 text-base font-medium border-2 border-white/40 bg-transparent text-white hover:bg-white hover:text-primary"
+            >
+              <Link to="/proyectos">Ver Proyectos</Link>
             </Button>
           </div>
         </div>

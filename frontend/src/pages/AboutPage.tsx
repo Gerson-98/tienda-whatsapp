@@ -1,164 +1,209 @@
 // src/pages/AboutPage.tsx
 
-import { Gem, Lightbulb, Users } from "lucide-react"; // Iconos para nuestros valores
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-// --- CAMBIO PARA ANIMACIONES: Importar MotionSection y MotionItem ---
-import { MotionItem, MotionSection } from "@/components/motion/FadeInSection";
+import { motion, useReducedMotion } from "framer-motion";
+import { Gem, Lightbulb, Users, Target, Eye, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
-// Datos ficticios para el equipo (sin cambios)
+const VALUES = [
+  {
+    icon: Gem,
+    title: "Calidad insuperable",
+    description:
+      "Materiales de primera y técnicas probadas para un producto final que perdure.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Innovación constante",
+    description:
+      "Las últimas tecnologías en aislamiento y seguridad al servicio de tu hogar.",
+  },
+  {
+    icon: Users,
+    title: "Compromiso con el cliente",
+    description:
+      "Te acompañamos antes, durante y después de la instalación.",
+  },
+];
+
+const TIMELINE = [
+  { year: "2010", title: "Nacemos", text: "Carlos Valdés funda VentPro en un pequeño taller." },
+  { year: "2014", title: "Crecimiento", text: "Ampliamos operaciones a toda la zona metropolitana." },
+  { year: "2019", title: "Innovación", text: "Incorporamos sistemas de aislamiento térmico premium." },
+  { year: "2024", title: "Líderes", text: "Más de 200 proyectos entregados en Guatemala." },
+];
 
 export const AboutPage = () => {
+  const reduce = useReducedMotion();
+
   return (
-    <main className="-mt-16">
-      {/* ========================================================== */}
-      {/* === CAMBIO MAYOR: SECCIÓN HERO CON IMAGEN DE FONDO Y OVERLAY === */}
-      {/* ========================================================== */}
-      <div
-        className="relative z-[-1] h-[50vh] bg-cover bg-center flex items-center justify-center text-center"
-        style={{ backgroundImage: "url('/images/hero/about-hero.jpg')" }}
-      >
-        {/* Overlay oscuro para mejorar la legibilidad del texto */}
-        <div className="absolute inset-0 bg-black opacity-60"></div>
-        <div className="relative z-10 text-white container pt-16">
-          {" "}
-          {/* Ajuste de padding */}
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Somos VentPro</h1>
-          <p className="mt-4 max-w-2xl mx-auto text-white/90 text-lg md:text-xl">
-            Más que ventanas, creamos espacios llenos de luz, confort y
-            seguridad para tu vida.
+    <main className="-mt-20">
+      {/* HERO */}
+      <div className="relative min-h-[40vh] flex items-center bg-primary text-primary-foreground overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-25"
+          style={{ backgroundImage: "url('/images/hero/about-hero.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-primary/90" />
+        <div className="container relative z-10 mx-auto text-center py-20">
+          <h1 className="font-display font-black text-5xl md:text-6xl tracking-tighter">
+            Somos VentPro
+          </h1>
+          <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl font-light opacity-90">
+            Más que ventanas: creamos espacios llenos de luz, confort y seguridad.
           </p>
         </div>
       </div>
-      {/* ========================================================== */}
-      {/* ===          FIN CAMBIO SECCIÓN HERO                   === */}
-      {/* ========================================================== */}
 
-      {/* SECCIÓN: NUESTRA HISTORIA */}
-      {/* --- CAMBIO PARA ANIMACIONES: Envolver en MotionSection y MotionItem --- */}
-      <MotionSection className="container py-20">
-        <MotionItem className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Nuestra Historia</h2>
-            <p className="text-muted-foreground mb-4">
-              VentPro nació en 2010 en un pequeño taller, con una idea simple
-              pero poderosa de nuestro fundador, Carlos Valdés: las familias
-              merecían ventanas que no solo se vieran bien, sino que realmente
-              funcionaran. Frustrado por la baja calidad y el pobre aislamiento
-              de las opciones en el mercado, Carlos dedicó años a perfeccionar
-              la técnica de instalación de ventanas de PVC.
-            </p>
-            <p className="text-muted-foreground">
-              Lo que comenzó con recomendaciones de boca en boca, gracias a una
-              obsesión por el detalle y la satisfacción del cliente, hoy se ha
-              convertido en una empresa líder, reconocida por su calidad y
-              compromiso. Cada proyecto lleva consigo el mismo espíritu
-              fundador: transformar hogares y mejorar vidas, una ventana a la
-              vez.
-            </p>
-          </div>
-          <div>
-            <img
-              src="/images/team/history1.jpg"
-              alt="Taller original de VentPro"
-              className="rounded-lg shadow-lg"
-            />
-          </div>
-        </MotionItem>
-      </MotionSection>
-
-      {/* SECCIÓN: NUESTRA MISIÓN */}
-      {/* --- CAMBIO PARA ANIMACIONES: Envolver en MotionSection y MotionItem --- */}
-      <div className="bg-muted">
-        <MotionSection className="container py-20">
-          <MotionItem className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <img
-                src="/images/team/history2.jpg"
-                alt="Equipo de VentPro planificando un proyecto"
-                className="rounded-lg shadow-lg"
-              />
+      {/* MISIÓN / VISIÓN */}
+      <section className="container mx-auto py-20">
+        <motion.div
+          variants={reduce ? undefined : staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          <motion.div
+            variants={reduce ? undefined : fadeUp}
+            className="bg-card rounded-2xl p-8 border border-border"
+          >
+            <div className="inline-flex bg-primary/10 rounded-xl p-3 text-primary mb-4">
+              <Target className="h-6 w-6" />
             </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-4">Nuestra Misión</h2>
-              <p className="text-muted-foreground mb-4">
-                Nuestra misión va más allá de instalar ventanas. Buscamos ser
-                tus asesores de confianza en confort y eficiencia energética.
-                Creemos que cada hogar es único, por lo que ofrecemos una
-                atención personalizada desde la primera llamada hasta el último
-                ajuste.
-              </p>
-              <p className="text-muted-foreground">
-                Combinamos la artesanía tradicional con la tecnología más
-                avanzada para garantizar que cada instalación no solo cumpla,
-                sino que supere tus expectativas. Queremos que, al mirar a
-                través de una de nuestras ventanas, veas un futuro más claro,
-                tranquilo y seguro.
-              </p>
+            <h2 className="font-display font-bold text-xl mb-3">Misión</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Ser tus asesores de confianza en confort y eficiencia energética,
+              combinando artesanía y tecnología para superar tus expectativas.
+            </p>
+          </motion.div>
+          <motion.div
+            variants={reduce ? undefined : fadeUp}
+            className="bg-card rounded-2xl p-8 border border-border"
+          >
+            <div className="inline-flex bg-secondary/15 rounded-xl p-3 text-secondary mb-4">
+              <Eye className="h-6 w-6" />
             </div>
-          </MotionItem>
-        </MotionSection>
-      </div>
+            <h2 className="font-display font-bold text-xl mb-3">Visión</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Convertirnos en la marca líder en soluciones de aluminio y PVC de
+              Centroamérica, sinónimo de calidad y diseño.
+            </p>
+          </motion.div>
+        </motion.div>
+      </section>
 
-      {/* SECCIÓN: NUESTROS VALORES */}
-      {/* --- CAMBIO PARA ANIMACIONES: Envolver en MotionSection y cada valor en MotionItem --- */}
-      <MotionSection className="container py-20 text-center">
-        <MotionItem>
-          <h2 className="text-3xl font-bold mb-10">Nuestros Pilares</h2>
-        </MotionItem>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <MotionItem className="flex flex-col items-center">
-            <Gem className="h-12 w-12 text-primary mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Calidad Insuperable</h3>
-            <p className="text-muted-foreground">
-              Solo usamos materiales de primera y técnicas probadas para
-              garantizar un producto final que perdure.
-            </p>
-          </MotionItem>
-          <MotionItem className="flex flex-col items-center">
-            <Lightbulb className="h-12 w-12 text-primary mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Innovación Constante</h3>
-            <p className="text-muted-foreground">
-              Buscamos activamente las últimas tecnologías en aislamiento y
-              seguridad para ofrecerte lo mejor.
-            </p>
-          </MotionItem>
-          <MotionItem className="flex flex-col items-center">
-            <Users className="h-12 w-12 text-primary mb-4" />
-            <h3 className="text-xl font-semibold mb-2">
-              Compromiso con el Cliente
-            </h3>
-            <p className="text-muted-foreground">
-              Tu satisfacción es nuestra prioridad. Te acompañamos antes,
-              durante y después de la instalación.
-            </p>
-          </MotionItem>
-        </div>
-      </MotionSection>
-
-      {/* SECCIÓN: CALL TO ACTION */}
-      {/* --- CAMBIO PARA ANIMACIONES: Envolver en MotionSection y MotionItem --- */}
-      <div className="bg-muted">
-        {" "}
-        {/* Añadido fondo para que el CTA se vea mejor contra la siguiente sección */}
-        <MotionSection className="container py-20 text-center">
-          <MotionItem>
-            <h2 className="text-3xl font-bold mb-4">
-              ¿Listo para transformar tu espacio?
+      {/* TIMELINE */}
+      <section className="bg-muted/50 py-20 border-y border-border">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 max-w-2xl mx-auto">
+            <span className="text-xs font-semibold uppercase tracking-widest text-secondary">
+              Nuestra historia
+            </span>
+            <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter">
+              Un recorrido de <span className="text-gradient">15 años</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Permítenos mostrarte por qué somos la mejor opción para tu
-              proyecto. Explora nuestro trabajo o contáctanos para una
-              cotización sin compromiso.
-            </p>
-          </MotionItem>
-          <MotionItem>
-            <Button size="lg" asChild>
-              <Link to="/proyectos">Ver Nuestros Proyectos</Link>
+          </div>
+
+          <div className="relative max-w-3xl mx-auto">
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-1/2" />
+            <motion.div
+              variants={reduce ? undefined : staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              className="space-y-12"
+            >
+              {TIMELINE.map((t, i) => (
+                <motion.div
+                  key={t.year}
+                  variants={reduce ? undefined : fadeUp}
+                  className={`relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12 ${
+                    i % 2 === 0 ? "" : "md:[&>div]:order-2"
+                  }`}
+                >
+                  <div
+                    className={`absolute left-4 md:left-1/2 top-2 h-3 w-3 rounded-full bg-primary -translate-x-1/2 ring-4 ring-background`}
+                  />
+                  <div
+                    className={
+                      i % 2 === 0 ? "md:text-right md:pr-8" : "md:pl-8 md:col-start-2"
+                    }
+                  >
+                    <div className="font-display font-black text-3xl text-primary tracking-tighter">
+                      {t.year}
+                    </div>
+                    <h3 className="font-display font-bold text-lg mt-1">
+                      {t.title}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm">{t.text}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* PILARES */}
+      <section className="container mx-auto py-20">
+        <div className="text-center mb-16">
+          <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
+            Nuestros <span className="text-gradient">pilares</span>
+          </h2>
+        </div>
+        <motion.div
+          variants={reduce ? undefined : staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {VALUES.map(({ icon: Icon, title, description }) => (
+            <motion.div
+              key={title}
+              variants={reduce ? undefined : fadeUp}
+              className="bg-card rounded-2xl p-8 border border-border text-center"
+            >
+              <div className="inline-flex bg-primary/10 rounded-xl p-4 text-primary mb-4">
+                <Icon className="h-7 w-7" />
+              </div>
+              <h3 className="font-display font-bold text-xl mb-3">{title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {description}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* CTA */}
+      <section className="container mx-auto pb-20">
+        <div className="bg-primary text-primary-foreground rounded-3xl p-12 text-center">
+          <h2 className="font-display font-black text-3xl md:text-4xl tracking-tighter mb-4">
+            ¿Listo para transformar tu espacio?
+          </h2>
+          <p className="opacity-90 max-w-2xl mx-auto mb-8 font-light">
+            Explora nuestros proyectos o cotiza el tuyo sin compromiso.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button asChild size="lg" variant="secondary" className="rounded-full">
+              <Link to="/proyectos">
+                Ver proyectos <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </Button>
-          </MotionItem>
-        </MotionSection>
-      </div>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full border-2 border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+            >
+              <Link to="/cotizacion">Cotizar ahora</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
     </main>
   );
 };

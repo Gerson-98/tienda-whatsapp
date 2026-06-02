@@ -1,17 +1,10 @@
 // frontend/src/pages/ProductsPage.tsx
 
 import { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { MotionItem, MotionSection } from "@/components/motion/FadeInSection";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Search, ShoppingCart, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -20,6 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCartStore, useIsInCart } from "@/store/cartStore";
+import { fadeUp, staggerContainer } from "@/lib/animations";
+import { cn } from "@/lib/utils";
 
 type Product = {
   id: string;
@@ -30,6 +26,56 @@ type Product = {
   category: { name: string };
 };
 
+const formatPrice = (price: number) =>
+  new Intl.NumberFormat("es-GT", {
+    style: "currency",
+    currency: "GTQ",
+  }).format(price);
+
+const ProductCard = ({ product }: { product: Product }) => {
+  const addItem = useCartStore((s) => s.addItem);
+  const inCart = useIsInCart(product.id);
+  return (
+    <motion.div
+      variants={fadeUp}
+      whileHover={{ scale: 1.02 }}
+      className="group bg-card rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col"
+    >
+      <div className="relative">
+        <img
+          src={product.imageUrl || "/images/placeholder.png"}
+          alt={product.name}
+          className="aspect-square object-cover w-full"
+        />
+        <span className="absolute top-3 left-3 bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-xs font-medium">
+          {product.category.name}
+        </span>
+      </div>
+      <div className="p-5 flex flex-col gap-3 flex-grow">
+        <h3 className="font-display font-bold text-lg leading-tight">
+          {product.name}
+        </h3>
+        <p className="text-sm text-muted-foreground line-clamp-2">
+          {product.description}
+        </p>
+        <p className="text-xl font-bold text-primary mt-auto">
+          {formatPrice(product.price)}
+        </p>
+        <Button
+          onClick={() =>
+            addItem({ id: product.id, name: product.name, price: product.price })
+          }
+          className="w-full rounded-xl mt-1"
+          aria-label={`Agregar ${product.name} al carrito`}
+        >
+          <ShoppingCart className="h-4 w-4" />
+          {inCart ? "Agregar otro" : "Agregar al carrito"}
+        </Button>
+      </div>
+    </motion.div>
+  );
+};
+
 export const ProductsPage = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -37,45 +83,36 @@ export const ProductsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name_asc");
+  const reduce = useReducedMotion();
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const debounceTimer = setTimeout(async () => {
       setIsLoading(true);
       const params = new URLSearchParams();
-      // Usamos un 'debounce' para no hacer una petición en cada tecla
-      const debounceTimer = setTimeout(async () => {
-        if (searchTerm) params.append("search", searchTerm);
-        if (sortBy) params.append("sortBy", sortBy);
+      if (searchTerm) params.append("search", searchTerm);
+      if (sortBy) params.append("sortBy", sortBy);
 
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/products?${params.toString()}`
-          );
-          if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-
-          const data: Product[] = await response.json();
-          setAllProducts(data);
-
-          // Actualizamos las categorías solo si no están cargadas
-          if (categories.length <= 1) {
-            // <= 1 para contar "Todos"
-            const uniqueCategories = [
-              "Todos",
-              ...new Set(data.map((p) => p.category.name)),
-            ];
-            setCategories(uniqueCategories);
-          }
-        } catch (error) {
-          console.error("Error al obtener los productos:", error);
-        } finally {
-          setIsLoading(false);
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/products?${params.toString()}`
+        );
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        const data: Product[] = await response.json();
+        setAllProducts(data);
+        if (categories.length <= 1) {
+          setCategories([
+            "Todos",
+            ...new Set(data.map((p) => p.category.name)),
+          ]);
         }
-      }, 300); // Espera 300ms después de que el usuario deja de escribir
+      } catch (error) {
+        console.error("Error al obtener los productos:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 300);
 
-      return () => clearTimeout(debounceTimer);
-    };
-
-    fetchProducts();
+    return () => clearTimeout(debounceTimer);
   }, [searchTerm, sortBy]);
 
   const filteredProducts =
@@ -83,127 +120,105 @@ export const ProductsPage = () => {
       ? allProducts
       : allProducts.filter((p) => p.category.name === activeCategory);
 
-  const formatPrice = (price: number) =>
-    new Intl.NumberFormat("es-GT", {
-      style: "currency",
-      currency: "GTQ",
-    }).format(price);
-
   return (
-    <main className="-mt-16">
-      {/* SECCIÓN HERO (Sin cambios) */}
+    <main className="-mt-20">
+      {/* HERO */}
       <div
-        className="relative z-[-1] h-[50vh] bg-cover bg-center flex items-center justify-center text-center"
+        className="relative h-[50vh] bg-cover bg-center flex items-center justify-center text-center"
         style={{ backgroundImage: "url('/images/hero/products-hero.jpg')" }}
       >
-        <div className="absolute inset-0 bg-black opacity-60"></div>
+        <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 text-white container pt-16">
-          <h1 className="text-4xl md:text-5xl font-bold">
-            Nuestro Catálogo de Productos
+          <h1 className="font-display font-black text-5xl md:text-6xl tracking-tighter">
+            Nuestro <span className="text-gradient">catálogo</span>
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-white/90 text-lg md:text-xl">
-            Descubre las soluciones que tenemos para ti, desde ventanas hasta
-            puertas de la más alta calidad.
+          <p className="mt-4 max-w-2xl mx-auto text-white/85 text-lg font-light">
+            Soluciones premium en ventanas, puertas y sistemas de PVC y aluminio.
           </p>
         </div>
       </div>
 
-      <div className="container py-20">
-        {/* Controles de Búsqueda y Ordenamiento (Sin cambios) */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <Input
-            placeholder="Buscar por nombre..."
-            className="flex-grow"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full md:w-[200px]">
-              <SelectValue placeholder="Ordenar por" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name_asc">Nombre (A-Z)</SelectItem>
-              <SelectItem value="price_asc">Precio (menor a mayor)</SelectItem>
-              <SelectItem value="price_desc">Precio (mayor a menor)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      {/* Barra sticky */}
+      <div className="sticky top-20 bg-background/95 backdrop-blur-sm z-10 py-4 border-b border-border">
+        <div className="container mx-auto flex flex-col gap-4">
+          <div className="flex flex-col md:flex-row gap-3">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar producto..."
+                className="rounded-xl border-input pl-10 h-11"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-full md:w-[220px] rounded-xl h-11">
+                <SelectValue placeholder="Ordenar por" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name_asc">Nombre (A-Z)</SelectItem>
+                <SelectItem value="price_asc">Precio (menor a mayor)</SelectItem>
+                <SelectItem value="price_desc">Precio (mayor a menor)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-        {/* --- CAMBIO CLAVE: Restauramos los botones de filtro por categoría --- */}
-        <div className="flex justify-center flex-wrap gap-4 mb-12">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={activeCategory === category ? "default" : "secondary"}
-              onClick={() => setActiveCategory(category)}
-            >
-              {category}
-            </Button>
-          ))}
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-medium cursor-pointer transition-colors whitespace-nowrap",
+                  activeCategory === category
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted hover:bg-muted/80 text-foreground"
+                )}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
+      </div>
 
-        {/* Galería de Productos (Sin cambios) */}
+      {/* Grid */}
+      <div className="container mx-auto py-16">
         {isLoading ? (
-          <div className="text-center">Cargando productos...</div>
+          <div className="text-center text-muted-foreground">
+            Cargando productos...
+          </div>
         ) : (
-          <MotionSection
-            key={activeCategory + searchTerm + sortBy}
-            animateOnLoad={true}
+          <motion.div
+            variants={reduce ? undefined : staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             <AnimatePresence>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredProducts.map((product) => (
-                  <MotionItem key={product.id}>
-                    <Card className="overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col">
-                      <CardHeader className="p-0">
-                        <img
-                          src={product.imageUrl || "/images/placeholder.png"}
-                          alt={product.name}
-                          className="w-full h-64 object-cover"
-                        />
-                      </CardHeader>
-                      <CardContent className="p-6 flex-grow">
-                        <CardTitle>{product.name}</CardTitle>
-                        <p className="text-muted-foreground mt-2 text-sm">
-                          {product.description}
-                        </p>
-                        <p className="text-2xl font-bold text-primary mt-4">
-                          {formatPrice(product.price)}
-                        </p>
-                      </CardContent>
-                      <CardFooter className="p-6 pt-0">
-                        <Button asChild className="w-full">
-                          <Link to="/contacto">Solicitar Información</Link>
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </MotionItem>
-                ))}
-              </div>
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             </AnimatePresence>
-          </MotionSection>
+          </motion.div>
         )}
       </div>
 
-      {/* CTA (Sin cambios) */}
-      <div className="bg-muted">
-        <MotionSection className="container py-20 text-center">
-          <MotionItem>
-            <h2 className="text-3xl font-bold mb-4">
-              ¿No estás seguro de qué ventana elegir?
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Nuestro equipo de expertos está listo para asesorarte. Permítenos
-              ayudarte a encontrar la solución perfecta para tu hogar y
-              presupuesto.
-            </p>
-          </MotionItem>
-          <MotionItem>
-            <Button size="lg" asChild>
-              <Link to="/contacto">Hablar con un Asesor</Link>
-            </Button>
-          </MotionItem>
-        </MotionSection>
+      {/* CTA */}
+      <div className="container mx-auto pb-20">
+        <div className="bg-muted/50 rounded-3xl border border-border p-12 text-center">
+          <h2 className="font-display font-black text-3xl md:text-4xl tracking-tighter mb-4">
+            ¿No estás seguro de qué elegir?
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+            Nuestro equipo te asesora para encontrar la solución perfecta.
+          </p>
+          <Button asChild size="lg" className="rounded-full">
+            <Link to="/contacto">
+              Hablar con un asesor <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </main>
   );

@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(cat render.yaml)",
+      "Bash(ls *.yaml *.yml)",
+      "Bash(git push *)",
+      "Bash(npx tsc *)"
     ]
   }
 }

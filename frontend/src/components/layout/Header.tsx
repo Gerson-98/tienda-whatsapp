@@ -1,84 +1,115 @@
 // src/components/layout/Header.tsx
 
-import { useState, useEffect } from "react"; // <-- 1. Importamos los hooks de React
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { ThemeToggle } from "./ThemeToggle";
+import { CartBadge } from "./CartBadge";
+import { cn } from "@/lib/utils";
 
-const NavLinks = ({ className }: { className?: string }) => (
-  <div className={`flex items-center gap-6 font-bold ${className}`}>
-    <Link to="/" className="transition-opacity hover:opacity-80">
-      Inicio
-    </Link>
-    <Link to="/proyectos" className="transition-opacity hover:opacity-80">
-      Proyectos
-    </Link>
-    <Link to="/productos" className="transition-opacity hover:opacity-80">
-      Productos
-    </Link>
-    <Link to="/nosotros" className="transition-opacity hover:opacity-80">
-      Nosotros
-    </Link>
-    <Link to="/contacto" className="transition-opacity hover:opacity-80">
-      Contacto
-    </Link>
+const NAV_ITEMS = [
+  { to: "/", label: "Inicio" },
+  { to: "/proyectos", label: "Proyectos" },
+  { to: "/productos", label: "Productos" },
+  { to: "/nosotros", label: "Nosotros" },
+  { to: "/contacto", label: "Contacto" },
+];
+
+const NavLinks = ({
+  className,
+  onNavigate,
+}: {
+  className?: string;
+  onNavigate?: () => void;
+}) => (
+  <div className={cn("flex items-center gap-8", className)}>
+    {NAV_ITEMS.map((item) => (
+      <NavLink
+        key={item.to}
+        to={item.to}
+        end={item.to === "/"}
+        onClick={onNavigate}
+        className={({ isActive }) =>
+          cn(
+            "nav-underline text-sm font-medium uppercase tracking-wider transition-colors hover:text-primary",
+            isActive && "active text-primary"
+          )
+        }
+      >
+        {item.label}
+      </NavLink>
+    ))}
   </div>
 );
 
 export const Header = () => {
-  // --- 2. Lógica para detectar el scroll ---
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Si el scroll vertical es mayor a 10px, cambiamos el estado
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    // Añadimos el listener cuando el componente se monta
-    window.addEventListener("scroll", handleScroll);
-
-    // Limpiamos el listener cuando el componente se desmonta
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // El array vacío asegura que esto se ejecute solo una vez
+    const handleScroll = () => setIsScrolled(window.scrollY > 60);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    // --- 3. Aplicamos clases condicionales para el efecto cristal ---
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-background/80 backdrop-blur-sm shadow-lg text-foreground"
+          ? "bg-background/85 backdrop-blur-md shadow-sm border-b border-border text-foreground"
           : "bg-transparent text-white"
-      }`}
+      )}
     >
-      {/* --- 4. Hacemos el contenedor relativo para centrar la navegación --- */}
-      <div className="container mx-auto flex h-16 items-center justify-between relative">
-        <Link to="/" className="text-2xl font-bold">
-          Vent<span className="text-primary">Pro</span>
+      <div className="container mx-auto flex h-20 items-center justify-between">
+        <Link
+          to="/"
+          className="font-display font-bold text-xl tracking-tight"
+        >
+          Vent<span className="text-secondary">Pro</span>
         </Link>
 
-        {/* --- 5. Centramos la navegación de escritorio de forma absoluta --- */}
-        <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <nav className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <NavLinks />
         </nav>
 
-        <div className="md:hidden">
-          <Sheet>
+        <div className="hidden lg:flex items-center gap-3">
+          <Button
+            asChild
+            className="rounded-full px-6 py-2.5 font-medium"
+          >
+            <Link to="/cotizacion">Cotizar ahora</Link>
+          </Button>
+          <div className="h-6 w-px bg-current/30" aria-hidden />
+          <CartBadge />
+          <ThemeToggle />
+        </div>
+
+        <div className="lg:hidden flex items-center gap-2">
+          <CartBadge />
+          <ThemeToggle />
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Abrir menú">
                 <Menu />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
-              <nav className="flex flex-col gap-4 mt-8">
-                <NavLinks className="flex-col text-lg" />
+            <SheetContent side="right" className="bg-background">
+              <nav className="flex flex-col gap-6 mt-12">
+                <NavLinks
+                  className="flex-col items-start text-lg gap-6"
+                  onNavigate={() => setMobileOpen(false)}
+                />
+                <Button
+                  asChild
+                  className="rounded-full mt-4 w-full"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Link to="/cotizacion">Cotizar ahora</Link>
+                </Button>
               </nav>
             </SheetContent>
           </Sheet>

@@ -1,73 +1,87 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { motion, useReducedMotion } from "framer-motion";
 import { Star } from "lucide-react";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
-// Sample testimonial data
 const testimonials = [
   {
     name: "Ana Pérez",
     location: "Guatemala City",
+    role: "Propietaria",
     comment:
-      "El aislamiento acústico es increíble. ¡Mi apartamento es mucho más tranquilo ahora! El equipo fue profesional y rápido.",
+      "El aislamiento acústico es increíble. ¡Mi apartamento es mucho más tranquilo ahora!",
     rating: 5,
   },
   {
     name: "Carlos González",
     location: "Antigua Guatemala",
+    role: "Arquitecto",
     comment:
-      "La calidad de las ventanas superó mis expectativas. Se ven modernas y la eficiencia energética ha mejorado notablemente.",
+      "La calidad de las ventanas superó mis expectativas. La eficiencia energética mejoró notablemente.",
     rating: 5,
   },
   {
     name: "Lucía Morales",
     location: "Quetzaltenango",
+    role: "Propietaria",
     comment:
-      "Un servicio al cliente excepcional de principio a fin. Me ayudaron a elegir la opción perfecta para mi casa. ¡Totalmente recomendados!",
+      "Un servicio al cliente excepcional de principio a fin. ¡Totalmente recomendados!",
     rating: 5,
   },
 ];
 
-// Helper component for star ratings
-const StarRating = ({ rating }: { rating: number }) => (
-  <div className="flex items-center gap-1 text-yellow-500">
-    {Array.from({ length: rating }).map((_, index) => (
-      <Star key={index} className="w-5 h-5 fill-current" />
-    ))}
-  </div>
-);
-
 export const Testimonials = () => {
+  const reduce = useReducedMotion();
+
   return (
-    <section className="bg-secondary/50 py-20">
-      <div className="container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold">
-            La Confianza de Nuestros Clientes
+    <section className="bg-muted/50 py-24 border-y border-border">
+      <div className="container mx-auto">
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">
+            Testimonios
+          </span>
+          <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter">
+            La confianza de nuestros{" "}
+            <span className="text-gradient">clientes</span>
           </h2>
-          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-            Descubre por qué nuestros clientes nos eligen para sus proyectos.
-          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <Card
-              key={testimonial.name}
-              className="bg-background p-6 flex flex-col justify-between shadow-md"
+        <motion.div
+          variants={reduce ? undefined : staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {testimonials.map((t) => (
+            <motion.div
+              key={t.name}
+              variants={reduce ? undefined : fadeUp}
+              className="bg-card rounded-2xl p-6 border border-border shadow-sm"
             >
-              <CardContent className="p-0">
-                <StarRating rating={testimonial.rating} />
-                <p className="mt-4 text-muted-foreground italic">
-                  "{testimonial.comment}"
-                </p>
-              </CardContent>
-              <div className="mt-6">
-                <p className="font-semibold">{testimonial.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {testimonial.location}
-                </p>
+              <span className="font-display text-5xl text-primary leading-none">
+                “
+              </span>
+              <p className="text-muted-foreground italic mt-2 leading-relaxed">
+                {t.comment}
+              </p>
+              <div className="flex items-center gap-1 text-secondary mt-5">
+                {Array.from({ length: t.rating }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-current" />
+                ))}
               </div>
-            </Card>
+              <div className="mt-5 flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold">
+                  {t.name.charAt(0)}
+                </div>
+                <div>
+                  <p className="font-semibold leading-tight">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {t.role} · {t.location}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -7,33 +7,39 @@ import { HeroCarousel } from "@/components/layout/HeroCarousel";
 import { ProjectGallery } from "@/components/layout/ProjectGallery";
 import { MotionSection } from "@/components/motion/FadeInSection";
 import { ContactInfo } from "@/components/layout/ContactInfo";
+import { StatsSection } from "@/components/layout/StatsSection";
+import { CTASection } from "@/components/layout/CTASection";
 
-// HomePage solo debe exportar el contenido principal <main>
 export function HomePage() {
   return (
-    <main className="-mt-16">
+    <main className="-mt-20">
       <HeroCarousel />
-      <div className="relative z-30 -mt-32 rounded-t-3xl bg-transparent">
-        <MotionSection animateOnLoad={true}>
-          <ProjectGallery />
-        </MotionSection>
 
-        <MotionSection>
-          <ServicesSection />
-        </MotionSection>
+      <StatsSection />
 
-        <MotionSection>
-          <Testimonials />
-        </MotionSection>
+      <MotionSection animateOnLoad={true}>
+        <ProjectGallery />
+      </MotionSection>
 
-        <MotionSection>
-          <ContactForm />
-        </MotionSection>
+      <MotionSection>
+        <ServicesSection />
+      </MotionSection>
 
-        <MotionSection>
-          <ContactInfo />
-        </MotionSection>
-      </div>
+      <MotionSection>
+        <Testimonials />
+      </MotionSection>
+
+      <MotionSection>
+        <CTASection />
+      </MotionSection>
+
+      <MotionSection>
+        <ContactForm />
+      </MotionSection>
+
+      <MotionSection>
+        <ContactInfo />
+      </MotionSection>
     </main>
   );
 }
