@@ -21,7 +21,7 @@ export const HeroCarousel = () => {
   ];
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center">
+    <section className="relative min-h-screen w-full overflow-hidden flex items-start md:items-center">
       <Carousel
         className="absolute inset-0 w-full h-full"
         opts={{ loop: true }}
@@ -43,7 +43,7 @@ export const HeroCarousel = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black/80 z-10" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent z-10" />
 
-      <div className="container relative z-20 mx-auto text-white pt-28 md:pt-24 pb-12">
+      <div className="container relative z-20 mx-auto text-white pt-32 md:pt-24 pb-12">
         <div className="max-w-3xl flex flex-col gap-6">
           <span className="relative inline-flex items-center gap-2 self-start rounded-full bg-secondary/20 text-secondary px-4 py-1 text-sm font-medium backdrop-blur-sm border border-secondary/30 mb-4">
             🏆 +200 proyectos en Guatemala
