@@ -5,47 +5,51 @@
 @layer base {
   :root {
     --background: 0 0% 98%;
-    --foreground: 220 30% 10%;
+    --foreground: 172 30% 8%;
     --card: 0 0% 100%;
-    --card-foreground: 220 30% 10%;
+    --card-foreground: 172 30% 8%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 10%;
-    --primary: 220 60% 15%;
+    --popover-foreground: 172 30% 8%;
+    /* Verde petróleo oscuro — diferenciador vs competencia azul */
+    --primary: 172 60% 18%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 38 65% 55%;
-    --secondary-foreground: 220 30% 10%;
-    --muted: 220 15% 94%;
-    --muted-foreground: 220 15% 45%;
-    --accent: 38 65% 55%;
-    --accent-foreground: 220 30% 10%;
+    /* Ámbar/dorado cálido — acento que contrasta con el petróleo */
+    --secondary: 38 70% 50%;
+    --secondary-foreground: 172 60% 8%;
+    --muted: 172 15% 94%;
+    --muted-foreground: 172 15% 45%;
+    /* Verde petróleo muy claro para fondos suaves */
+    --accent: 172 40% 92%;
+    --accent-foreground: 172 60% 18%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 220 60% 15%;
+    --border: 172 15% 88%;
+    --input: 172 15% 88%;
+    --ring: 172 60% 18%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 220 35% 7%;
+    --background: 172 35% 6%;
     --foreground: 0 0% 96%;
-    --card: 220 30% 10%;
+    --card: 172 30% 9%;
     --card-foreground: 0 0% 96%;
-    --popover: 220 30% 10%;
+    --popover: 172 30% 9%;
     --popover-foreground: 0 0% 96%;
-    --primary: 38 65% 55%;
-    --primary-foreground: 220 35% 7%;
-    --secondary: 220 30% 18%;
+    /* En dark el dorado toma el protagonismo */
+    --primary: 38 70% 50%;
+    --primary-foreground: 172 60% 8%;
+    --secondary: 172 40% 20%;
     --secondary-foreground: 0 0% 96%;
-    --muted: 220 25% 12%;
-    --muted-foreground: 220 15% 65%;
-    --accent: 38 65% 55%;
-    --accent-foreground: 220 35% 7%;
+    --muted: 172 25% 12%;
+    --muted-foreground: 172 15% 65%;
+    --accent: 172 40% 20%;
+    --accent-foreground: 38 70% 50%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 96%;
-    --border: 220 25% 18%;
-    --input: 220 25% 18%;
-    --ring: 38 65% 55%;
+    --border: 172 25% 18%;
+    --input: 172 25% 18%;
+    --ring: 38 70% 50%;
   }
 
   * {

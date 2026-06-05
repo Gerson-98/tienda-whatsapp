@@ -8,8 +8,8 @@ export default {
   theme: {
   	extend: {
   		fontFamily: {
-  			sans: ['Inter', 'system-ui', 'sans-serif'],
-  			display: ['Montserrat', 'sans-serif'],
+  			sans: ['DM Sans', 'system-ui', 'sans-serif'],
+  			display: ['Plus Jakarta Sans', 'sans-serif'],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

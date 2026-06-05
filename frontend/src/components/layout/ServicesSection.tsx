@@ -1,3 +1,4 @@
+// Cards editoriales con numeración grande — diferenciador vs competencia con cards genéricas
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Square,
@@ -7,7 +8,7 @@ import {
   DoorOpen,
   ThermometerSun,
 } from "lucide-react";
-import { fadeUp, staggerContainer } from "@/lib/animations";
+import { staggerContainer, fadeUp } from "@/lib/animations";
 
 const services = [
   {
@@ -60,7 +61,7 @@ export const ServicesSection = () => {
           </span>
           <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter">
             Nuestras soluciones en{" "}
-            <span className="text-gradient">PVC</span>
+            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">PVC</span>
           </h2>
           <p className="text-muted-foreground mt-4 text-lg font-light">
             Productos diseñados para el confort, la seguridad y la estética de tu hogar.
@@ -71,24 +72,38 @@ export const ServicesSection = () => {
           variants={reduce ? undefined : staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {services.map(({ icon: Icon, title, description }) => (
+          {services.map(({ icon: Icon, title, description }, i) => (
             <motion.div
               key={title}
               variants={reduce ? undefined : fadeUp}
-              className="group bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              className="group relative bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary p-4">
-                <Icon className="h-8 w-8" />
+              {/* Número editorial grande en fondo */}
+              <span
+                aria-hidden
+                className="absolute top-3 right-4 font-display font-black text-8xl leading-none text-primary/[0.07] select-none pointer-events-none"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              {/* Ícono */}
+              <div className="relative z-10 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Icon className="h-7 w-7" aria-hidden />
               </div>
-              <h3 className="mt-6 font-display font-bold text-xl mb-3">
+
+              {/* Contenido */}
+              <h3 className="relative z-10 mt-5 font-display font-bold text-xl mb-2">
                 {title}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="relative z-10 text-muted-foreground text-sm leading-relaxed">
                 {description}
               </p>
+
+              {/* Línea de acento inferior — se expande en hover */}
+              <div className="mt-5 h-0.5 bg-secondary rounded-full w-12 group-hover:w-full transition-all duration-500" />
             </motion.div>
           ))}
         </motion.div>

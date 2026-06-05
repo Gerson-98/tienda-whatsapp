@@ -240,7 +240,7 @@ export const ContactPage = () => {
               }
             />
 
-            <div className="rounded-2xl overflow-hidden border border-border mt-6 h-64">
+            <div className="rounded-2xl overflow-hidden border border-border mt-6 h-48 md:h-64">
               <iframe
                 title="Ubicación VentPro"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6880.597763663834!2d-90.52171027789107!3d14.564572138762381!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8589a6ab21508c17%3A0x83eafff435a548b6!2sProtecci%C3%B3n%20Total!5e0!3m2!1ses!2sgt!4v1761241191702!5m2!1ses!2sgt"

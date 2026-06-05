@@ -9,6 +9,7 @@ import { MotionSection } from "@/components/motion/FadeInSection";
 import { ContactInfo } from "@/components/layout/ContactInfo";
 import { StatsSection } from "@/components/layout/StatsSection";
 import { CTASection } from "@/components/layout/CTASection";
+import { WhyVentPro } from "@/components/layout/WhyVentPro";
 
 export function HomePage() {
   return (
@@ -16,6 +17,9 @@ export function HomePage() {
       <HeroCarousel />
 
       <StatsSection />
+
+      {/* Sección diferenciadora — rompe el ritmo justo después del hero */}
+      <WhyVentPro />
 
       <MotionSection animateOnLoad={true}>
         <ProjectGallery />

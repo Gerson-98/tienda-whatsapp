@@ -123,7 +123,7 @@ export async function apiRequest<T = unknown>(
   if (!API_URL) {
     throw new ApiError(
       "network",
-      "VITE_API_URL no está configurada. Revisa tu archivo .env."
+      "La URL del servidor no está configurada (VITE_API_URL). Contacta al administrador del sitio."
     );
   }
 
