@@ -72,7 +72,7 @@ export const HeroCarousel = () => {
       </div>
 
       {/* Contenido de texto */}
-      <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-0 md:min-h-screen md:flex md:items-center">
+      <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-24 md:pb-20 md:min-h-screen md:flex md:items-center">
         <motion.div
           variants={containerVariants}
           initial="hidden"

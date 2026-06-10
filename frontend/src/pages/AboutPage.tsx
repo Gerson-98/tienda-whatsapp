@@ -46,7 +46,7 @@ export const AboutPage = () => {
           style={{ backgroundImage: "url('/images/hero/about-hero.jpg')" }}
         />
         <div className="absolute inset-0 bg-primary/90" />
-        <div className="container relative z-10 mx-auto text-center py-20">
+        <div className="container relative z-10 mx-auto text-center pt-40 pb-20">
           <h1 className="font-display font-black text-5xl md:text-6xl tracking-tighter">
             Somos VentPro
           </h1>
