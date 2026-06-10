@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { LightRays } from "@/components/layout/LightRays";
 
 const makeSlide = (xOffset: number, delay = 0): Variants => ({
   hidden: { opacity: 0, y: 16, x: xOffset },
@@ -40,12 +41,15 @@ export const HeroCarousel = () => {
         <rect width="100%" height="100%" fill="url(#diag)" />
       </svg>
 
+      {/* Rayos de luz solar atravesando vidrio */}
+      <LightRays />
+
       {/* Gradiente para legibilidad del texto en mobile y desktop */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/10 z-10 pointer-events-none" />
 
-      {/* Imagen lado derecho con clip-path diagonal */}
+      {/* Imagen lado derecho con clip-path diagonal — efecto "vista a través de ventana" */}
       <div
-        className="absolute inset-y-0 right-0 w-full md:w-[58%] z-0"
+        className="glass-sheen absolute inset-y-0 right-0 w-full md:w-[58%] z-0"
         style={{ clipPath: "polygon(12% 0, 100% 0, 100% 100%, 0% 100%)" }}
       >
         <img
@@ -59,6 +63,12 @@ export const HeroCarousel = () => {
           height={800}
         />
         <div className="absolute inset-0 bg-primary/35" />
+        {/* Marco de ventana — divisiones tipo cristal */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-y-0 left-1/2 w-px bg-white/20" />
+          <div className="absolute inset-x-0 top-1/2 h-px bg-white/20" />
+          <div className="absolute inset-4 border border-white/15" />
+        </div>
       </div>
 
       {/* Contenido de texto */}

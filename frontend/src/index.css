@@ -4,52 +4,52 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 172 30% 8%;
+    --background: 204 50% 98%;
+    --foreground: 215 35% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 172 30% 8%;
+    --card-foreground: 215 35% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 172 30% 8%;
-    /* Verde petróleo oscuro — diferenciador vs competencia azul */
-    --primary: 172 60% 18%;
+    --popover-foreground: 215 35% 12%;
+    /* Celeste profundo — color dominante de la marca */
+    --primary: 199 89% 42%;
     --primary-foreground: 0 0% 100%;
-    /* Ámbar/dorado cálido — acento que contrasta con el petróleo */
-    --secondary: 38 70% 50%;
-    --secondary-foreground: 172 60% 8%;
-    --muted: 172 15% 94%;
-    --muted-foreground: 172 15% 45%;
-    /* Verde petróleo muy claro para fondos suaves */
-    --accent: 172 40% 92%;
-    --accent-foreground: 172 60% 18%;
+    /* Ámbar cálido — luz solar atravesando el vidrio */
+    --secondary: 35 92% 51%;
+    --secondary-foreground: 215 40% 12%;
+    --muted: 204 30% 95%;
+    --muted-foreground: 215 15% 45%;
+    /* Celeste muy claro para fondos suaves tipo "vidrio esmerilado" */
+    --accent: 199 85% 94%;
+    --accent-foreground: 199 89% 30%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 172 15% 88%;
-    --input: 172 15% 88%;
-    --ring: 172 60% 18%;
+    --border: 204 25% 89%;
+    --input: 204 25% 89%;
+    --ring: 199 89% 42%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 172 35% 6%;
-    --foreground: 0 0% 96%;
-    --card: 172 30% 9%;
-    --card-foreground: 0 0% 96%;
-    --popover: 172 30% 9%;
-    --popover-foreground: 0 0% 96%;
-    /* En dark el dorado toma el protagonismo */
-    --primary: 38 70% 50%;
-    --primary-foreground: 172 60% 8%;
-    --secondary: 172 40% 20%;
-    --secondary-foreground: 0 0% 96%;
-    --muted: 172 25% 12%;
-    --muted-foreground: 172 15% 65%;
-    --accent: 172 40% 20%;
-    --accent-foreground: 38 70% 50%;
+    --background: 213 50% 6%;
+    --foreground: 204 40% 96%;
+    --card: 213 42% 9%;
+    --card-foreground: 204 40% 96%;
+    --popover: 213 42% 9%;
+    --popover-foreground: 204 40% 96%;
+    /* Celeste vibrante sobre fondo nocturno */
+    --primary: 199 92% 56%;
+    --primary-foreground: 213 50% 8%;
+    --secondary: 35 92% 56%;
+    --secondary-foreground: 213 50% 10%;
+    --muted: 213 35% 13%;
+    --muted-foreground: 204 20% 65%;
+    --accent: 199 55% 16%;
+    --accent-foreground: 199 92% 65%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 96%;
-    --border: 172 25% 18%;
-    --input: 172 25% 18%;
-    --ring: 38 70% 50%;
+    --border: 213 30% 18%;
+    --input: 213 30% 18%;
+    --ring: 199 92% 56%;
   }
 
   * {
@@ -96,5 +96,103 @@
   .nav-underline:hover::after,
   .nav-underline.active::after {
     transform: scaleX(1);
+  }
+
+  /* Reflejo de luz tipo "vidrio" — barrido diagonal al pasar el mouse.
+     No define `position`: el elemento debe aportar su propio contexto
+     (relative/absolute) para no pisar utilidades de Tailwind. */
+  .glass-sheen {
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .glass-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    left: -75%;
+    width: 50%;
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      hsl(0 0% 100% / 0.45) 50%,
+      transparent 100%
+    );
+    transform: skewX(-20deg);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .dark .glass-sheen::after {
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      hsl(var(--primary) / 0.35) 50%,
+      transparent 100%
+    );
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .glass-sheen::after {
+      transition: left 0.85s ease;
+    }
+    .glass-sheen:hover::after,
+    .glass-sheen:focus-within::after {
+      left: 125%;
+    }
+  }
+
+  /* Rayos de luz solar atravesando vidrio — fondo decorativo animado */
+  .light-rays {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+  .light-ray {
+    position: absolute;
+    top: -60%;
+    width: 18%;
+    height: 220%;
+    background: linear-gradient(180deg, hsl(var(--secondary) / 0.35), transparent 65%);
+    filter: blur(18px);
+    transform: rotate(22deg);
+    opacity: 0.6;
+  }
+  .light-ray-1 { left: 8%; }
+  .light-ray-2 { left: 42%; }
+  .light-ray-3 { left: 76%; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .light-ray-1 { animation: ray-drift 18s ease-in-out infinite; }
+    .light-ray-2 { animation: ray-drift 24s ease-in-out infinite reverse; animation-delay: -4s; }
+    .light-ray-3 { animation: ray-drift 20s ease-in-out infinite; animation-delay: -9s; }
+  }
+
+  @keyframes ray-drift {
+    0%, 100% { transform: rotate(22deg) translateX(0); opacity: 0.45; }
+    50% { transform: rotate(17deg) translateX(48px); opacity: 0.85; }
+  }
+
+  /* Efecto cristal con resplandor que sigue al cursor */
+  .glass-glow {
+    position: relative;
+    isolation: isolate;
+  }
+  .glass-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      hsl(var(--primary) / 0.18),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .glass-glow:hover::before {
+    opacity: 1;
   }
 }

@@ -9,6 +9,7 @@ import {
   ThermometerSun,
 } from "lucide-react";
 import { staggerContainer, fadeUp } from "@/lib/animations";
+import { useGlassGlow } from "@/lib/useGlassGlow";
 
 const services = [
   {
@@ -51,6 +52,7 @@ const services = [
 
 export const ServicesSection = () => {
   const reduce = useReducedMotion();
+  const handleGlow = useGlassGlow();
 
   return (
     <section className="bg-background py-24">
@@ -79,7 +81,8 @@ export const ServicesSection = () => {
             <motion.div
               key={title}
               variants={reduce ? undefined : fadeUp}
-              className="group relative bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+              onMouseMove={handleGlow}
+              className="group glass-glow glass-sheen relative bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
               {/* Número editorial grande en fondo */}
               <span
@@ -103,7 +106,7 @@ export const ServicesSection = () => {
               </p>
 
               {/* Línea de acento inferior — se expande en hover */}
-              <div className="mt-5 h-0.5 bg-secondary rounded-full w-12 group-hover:w-full transition-all duration-500" />
+              <div className="relative z-10 mt-5 h-0.5 bg-secondary rounded-full w-12 group-hover:w-full transition-all duration-500" />
             </motion.div>
           ))}
         </motion.div>

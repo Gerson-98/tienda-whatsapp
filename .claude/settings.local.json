@@ -5,7 +5,11 @@
       "Bash(cat render.yaml)",
       "Bash(ls *.yaml *.yml)",
       "Bash(git push *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(git commit *)",
+      "Bash(xxd public/_redirects)",
+      "Bash(git add *)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }

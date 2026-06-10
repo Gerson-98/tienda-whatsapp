@@ -2,6 +2,8 @@
 import { ShieldCheck, Zap, HeartHandshake } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/animations";
+import { useGlassGlow } from "@/lib/useGlassGlow";
+import { LightRays } from "@/components/layout/LightRays";
 
 const DIFFERENTIATORS = [
   {
@@ -26,6 +28,7 @@ const DIFFERENTIATORS = [
 
 export const WhyVentPro = () => {
   const reduce = useReducedMotion();
+  const handleGlow = useGlassGlow();
 
   return (
     <section className="bg-primary py-20 md:py-28 relative overflow-hidden">
@@ -42,6 +45,9 @@ export const WhyVentPro = () => {
         </defs>
         <rect width="100%" height="100%" fill="url(#grid-why)" />
       </svg>
+
+      {/* Rayos de luz solar atravesando vidrio */}
+      <LightRays />
 
       <div className="container mx-auto relative z-10">
         {/* Cabecera */}
@@ -69,15 +75,16 @@ export const WhyVentPro = () => {
             <motion.div
               key={title}
               variants={reduce ? undefined : fadeUp}
-              className="bg-white/[0.06] border border-white/10 rounded-2xl p-8 backdrop-blur-sm hover:bg-white/10 transition-colors duration-300"
+              onMouseMove={handleGlow}
+              className="glass-glow glass-sheen relative bg-white/[0.06] border border-white/10 rounded-2xl p-8 backdrop-blur-sm hover:bg-white/10 transition-colors duration-300"
             >
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20 text-secondary mb-5">
+              <div className="relative z-10 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20 text-secondary mb-5">
                 <Icon className="h-6 w-6" aria-hidden />
               </div>
-              <h3 className="font-display font-bold text-xl text-white mb-3">
+              <h3 className="relative z-10 font-display font-bold text-xl text-white mb-3">
                 {title}
               </h3>
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="relative z-10 text-white/60 text-sm leading-relaxed">
                 {description}
               </p>
             </motion.div>
