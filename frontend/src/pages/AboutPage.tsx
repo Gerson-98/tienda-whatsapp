@@ -107,7 +107,7 @@ export const AboutPage = () => {
           </div>
 
           <div className="relative max-w-3xl mx-auto">
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-1/2" />
+            <div className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-px bg-border lg:-translate-x-1/2" />
             <motion.div
               variants={reduce ? undefined : staggerContainer}
               initial="hidden"
@@ -119,16 +119,16 @@ export const AboutPage = () => {
                 <motion.div
                   key={t.year}
                   variants={reduce ? undefined : fadeUp}
-                  className={`relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12 ${
-                    i % 2 === 0 ? "" : "md:[&>div]:order-2"
+                  className={`relative pl-12 lg:pl-0 lg:grid lg:grid-cols-2 lg:gap-12 ${
+                    i % 2 === 0 ? "" : "lg:[&>div]:order-2"
                   }`}
                 >
                   <div
-                    className={`absolute left-4 md:left-1/2 top-2 h-3 w-3 rounded-full bg-primary -translate-x-1/2 ring-4 ring-background`}
+                    className={`absolute left-4 lg:left-1/2 top-2 h-3 w-3 rounded-full bg-primary -translate-x-1/2 ring-4 ring-background`}
                   />
                   <div
                     className={
-                      i % 2 === 0 ? "md:text-right md:pr-8" : "md:pl-8 md:col-start-2"
+                      i % 2 === 0 ? "lg:text-right lg:pr-8" : "lg:pl-8 lg:col-start-2"
                     }
                   >
                     <div className="font-display font-black text-3xl text-primary tracking-tighter">
@@ -158,7 +158,7 @@ export const AboutPage = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {VALUES.map(({ icon: Icon, title, description }) => (
             <motion.div

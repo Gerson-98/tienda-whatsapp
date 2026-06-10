@@ -36,7 +36,7 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[hsl(213,50%,7%)] text-slate-300">
+    <footer className="bg-[hsl(215,35%,8%)] text-slate-300">
       <div className="container mx-auto py-14 md:py-16">
         <div className="grid grid-cols-1 gap-10 text-center md:text-left md:grid-cols-2 lg:grid-cols-4 md:gap-10">
 
@@ -116,10 +116,10 @@ export const Footer = () => {
               <li>
                 <a
                   href="mailto:cotizaciones@ventpro.com"
-                  className="flex items-center justify-center md:justify-start gap-3 py-1.5 hover:text-white transition"
+                  className="flex items-center justify-center md:justify-start gap-3 py-1.5 hover:text-white transition min-w-0"
                 >
                   <Mail className="h-4 w-4 shrink-0 text-secondary" />
-                  <span>cotizaciones@ventpro.com</span>
+                  <span className="break-all">cotizaciones@ventpro.com</span>
                 </a>
               </li>
               <li className="flex items-start justify-center md:justify-start gap-3 py-1.5">

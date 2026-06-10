@@ -98,7 +98,7 @@ export const ServicesSection = () => {
               </div>
 
               {/* Contenido */}
-              <h3 className="relative z-10 mt-5 font-display font-bold text-xl mb-2">
+              <h3 className="relative z-10 mt-5 font-display font-bold text-xl mb-2 line-clamp-2">
                 {title}
               </h3>
               <p className="relative z-10 text-muted-foreground text-sm leading-relaxed">

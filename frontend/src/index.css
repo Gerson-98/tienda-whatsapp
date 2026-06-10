@@ -4,52 +4,52 @@
 
 @layer base {
   :root {
-    --background: 204 50% 98%;
-    --foreground: 215 35% 12%;
-    --card: 0 0% 100%;
-    --card-foreground: 215 35% 12%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 35% 12%;
-    /* Celeste profundo — color dominante de la marca */
-    --primary: 199 89% 42%;
+    --background: 210 20% 96%;
+    --foreground: 215 35% 14%;
+    --card: 210 20% 93%;
+    --card-foreground: 215 35% 14%;
+    --popover: 210 20% 93%;
+    --popover-foreground: 215 35% 14%;
+    /* Celeste profundo y serio — entre sky-800 y slate-700, identidad de marca */
+    --primary: 203 55% 32%;
     --primary-foreground: 0 0% 100%;
     /* Ámbar cálido — luz solar atravesando el vidrio */
     --secondary: 35 92% 51%;
     --secondary-foreground: 215 40% 12%;
-    --muted: 204 30% 95%;
+    --muted: 210 15% 90%;
     --muted-foreground: 215 15% 45%;
     /* Celeste muy claro para fondos suaves tipo "vidrio esmerilado" */
-    --accent: 199 85% 94%;
-    --accent-foreground: 199 89% 30%;
+    --accent: 203 50% 90%;
+    --accent-foreground: 203 55% 25%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 204 25% 89%;
-    --input: 204 25% 89%;
-    --ring: 199 89% 42%;
+    --border: 210 15% 85%;
+    --input: 210 15% 85%;
+    --ring: 203 55% 32%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 213 50% 6%;
+    --background: 215 35% 8%;
     --foreground: 204 40% 96%;
-    --card: 213 42% 9%;
+    --card: 215 30% 12%;
     --card-foreground: 204 40% 96%;
-    --popover: 213 42% 9%;
+    --popover: 215 30% 12%;
     --popover-foreground: 204 40% 96%;
-    /* Celeste vibrante sobre fondo nocturno */
-    --primary: 199 92% 56%;
-    --primary-foreground: 213 50% 8%;
+    /* Celeste medio sobre fondo nocturno frío */
+    --primary: 199 80% 50%;
+    --primary-foreground: 215 35% 8%;
     --secondary: 35 92% 56%;
     --secondary-foreground: 213 50% 10%;
-    --muted: 213 35% 13%;
+    --muted: 215 25% 16%;
     --muted-foreground: 204 20% 65%;
-    --accent: 199 55% 16%;
-    --accent-foreground: 199 92% 65%;
+    --accent: 199 50% 18%;
+    --accent-foreground: 199 85% 65%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 96%;
-    --border: 213 30% 18%;
-    --input: 213 30% 18%;
-    --ring: 199 92% 56%;
+    --border: 215 25% 20%;
+    --input: 215 25% 20%;
+    --ring: 199 80% 50%;
   }
 
   * {

@@ -69,7 +69,7 @@ export const WhyVentPro = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {DIFFERENTIATORS.map(({ icon: Icon, title, description }) => (
             <motion.div
@@ -81,7 +81,7 @@ export const WhyVentPro = () => {
               <div className="relative z-10 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20 text-secondary mb-5">
                 <Icon className="h-6 w-6" aria-hidden />
               </div>
-              <h3 className="relative z-10 font-display font-bold text-xl text-white mb-3">
+              <h3 className="relative z-10 font-display font-bold text-xl text-white mb-3 line-clamp-2">
                 {title}
               </h3>
               <p className="relative z-10 text-white/60 text-sm leading-relaxed">

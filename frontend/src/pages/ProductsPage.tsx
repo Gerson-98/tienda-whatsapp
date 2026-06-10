@@ -16,6 +16,12 @@ import {
 import { useCartStore, useIsInCart } from "@/store/cartStore";
 import { fadeUp, staggerContainer } from "@/lib/animations";
 import { cn } from "@/lib/utils";
+import { api, ApiError } from "@/services/apiClient";
+import { logger } from "@/lib/logger";
+import { ErrorState } from "@/components/common/ErrorState";
+import { EmptyState } from "@/components/common/EmptyState";
+import { ProductCardSkeleton } from "@/components/products/ProductCardSkeleton";
+import { PackageSearch } from "lucide-react";
 
 type Product = {
   id: string;
@@ -81,23 +87,23 @@ export const ProductsPage = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name_asc");
+  const [retryCount, setRetryCount] = useState(0);
   const reduce = useReducedMotion();
+
+  logger.debug("API URL:", import.meta.env.VITE_API_URL);
 
   useEffect(() => {
     const debounceTimer = setTimeout(async () => {
       setIsLoading(true);
-      const params = new URLSearchParams();
-      if (searchTerm) params.append("search", searchTerm);
-      if (sortBy) params.append("sortBy", sortBy);
+      setErrorMessage(null);
 
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/products?${params.toString()}`
-        );
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-        const data: Product[] = await response.json();
+        const data = await api.get<Product[]>("/products", {
+          query: { search: searchTerm || undefined, sortBy },
+        });
         setAllProducts(data);
         if (categories.length <= 1) {
           setCategories([
@@ -106,14 +112,21 @@ export const ProductsPage = () => {
           ]);
         }
       } catch (error) {
-        console.error("Error al obtener los productos:", error);
+        logger.error("Error al obtener los productos:", error);
+        setAllProducts([]);
+        setErrorMessage(
+          error instanceof ApiError
+            ? error.userMessage
+            : "Los productos no están disponibles en este momento. Contáctanos directamente."
+        );
       } finally {
         setIsLoading(false);
       }
     }, 300);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchTerm, sortBy]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, sortBy, retryCount]);
 
   const filteredProducts =
     activeCategory === "Todos"
@@ -185,9 +198,23 @@ export const ProductsPage = () => {
       {/* Grid */}
       <div className="container mx-auto py-16">
         {isLoading ? (
-          <div className="text-center text-muted-foreground">
-            Cargando productos...
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
           </div>
+        ) : errorMessage ? (
+          <ErrorState
+            title="Los productos no están disponibles en este momento"
+            description={`${errorMessage} Contáctanos directamente.`}
+            onRetry={() => setRetryCount((c) => c + 1)}
+          />
+        ) : filteredProducts.length === 0 ? (
+          <EmptyState
+            icon={PackageSearch}
+            title="No encontramos productos"
+            description="Prueba con otra búsqueda o categoría."
+          />
         ) : (
           <motion.div
             variants={reduce ? undefined : staggerContainer}
