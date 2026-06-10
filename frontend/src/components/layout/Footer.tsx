@@ -133,6 +133,10 @@ export const Footer = () => {
         <div className="mt-12 border-t border-white/10 pt-6">
           <p className="text-center text-sm text-slate-500">
             &copy; {currentYear} VentPro. Todos los derechos reservados.
+            {" · "}
+            <Link to="/admin/login" className="hover:text-slate-300 transition">
+              Admin
+            </Link>
           </p>
         </div>
       </div>

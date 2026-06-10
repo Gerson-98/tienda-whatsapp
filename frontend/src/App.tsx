@@ -1,6 +1,6 @@
 // src/App.tsx
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { HomePage } from "@/pages/HomePage";
 import { ProjectsPage } from "@/pages/ProjectsPage";
@@ -10,6 +10,8 @@ import { QuotePage } from "@/pages/QuotePage";
 import { ContactPage } from "@/pages/ContactPage"; // <-- 1. Importa la nueva página
 import { LoginPage } from "@/pages/LoginPage";
 import { AdminDashboard } from "@/pages/AdminDashboard";
+import { NotFoundPage } from "@/pages/NotFoundPage";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 function App() {
   return (
@@ -25,8 +27,19 @@ function App() {
       </Route>
 
       {/* Rutas de Administrador */}
+      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
       <Route path="/admin/login" element={<LoginPage />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 404 */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

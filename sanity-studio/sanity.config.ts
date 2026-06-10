@@ -8,6 +8,7 @@ import {visionTool} from '@sanity/vision'
 import project from './schemas/project'
 import product from './schemas/product'
 import projectCategory from './schemas/projectCategory'
+import productCategory from './schemas/productCategory'
 import siteSettings from './schemas/siteSettings'
 
 export default defineConfig({
@@ -39,6 +40,6 @@ export default defineConfig({
 
   schema: {
     // --- 2. AÑADE LOS SCHEMAS AL ARRAY ---
-    types: [project, product, projectCategory, siteSettings],
+    types: [project, product, projectCategory, productCategory, siteSettings],
   },
 })

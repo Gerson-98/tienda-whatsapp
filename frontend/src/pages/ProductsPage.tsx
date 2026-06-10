@@ -1,9 +1,9 @@
 // frontend/src/pages/ProductsPage.tsx
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Search, ShoppingCart, ArrowRight } from "lucide-react";
+import { Search, ShoppingCart, ArrowRight, PackageSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,21 +16,21 @@ import {
 import { useCartStore, useIsInCart } from "@/store/cartStore";
 import { fadeUp, staggerContainer } from "@/lib/animations";
 import { cn } from "@/lib/utils";
-import { api, ApiError } from "@/services/apiClient";
+import { client, urlFor } from "@/sanityClient";
 import { logger } from "@/lib/logger";
 import { ErrorState } from "@/components/common/ErrorState";
 import { EmptyState } from "@/components/common/EmptyState";
 import { ProductCardSkeleton } from "@/components/products/ProductCardSkeleton";
-import { PackageSearch } from "lucide-react";
 import { useHeroImage } from "@/lib/siteSettings";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 type Product = {
-  id: string;
+  _id: string;
   name: string;
   description: string | null;
-  imageUrl: string | null;
+  imageUrl: SanityImageSource | null;
   price: number;
-  category: { name: string };
+  categoryName: string | null;
 };
 
 const formatPrice = (price: number) =>
@@ -41,7 +41,11 @@ const formatPrice = (price: number) =>
 
 const ProductCard = ({ product }: { product: Product }) => {
   const addItem = useCartStore((s) => s.addItem);
-  const inCart = useIsInCart(product.id);
+  const inCart = useIsInCart(product._id);
+  const imageSrc = product.imageUrl
+    ? urlFor(product.imageUrl).width(500).height(500).auto("format").quality(75).url()
+    : "/images/placeholder.png";
+
   return (
     <motion.div
       variants={fadeUp}
@@ -50,13 +54,15 @@ const ProductCard = ({ product }: { product: Product }) => {
     >
       <div className="relative">
         <img
-          src={product.imageUrl || "/images/placeholder.png"}
+          src={imageSrc}
           alt={product.name}
           className="aspect-square object-cover w-full"
         />
-        <span className="absolute top-3 left-3 bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-xs font-medium">
-          {product.category.name}
-        </span>
+        {product.categoryName && (
+          <span className="absolute top-3 left-3 bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-xs font-medium">
+            {product.categoryName}
+          </span>
+        )}
       </div>
       <div className="p-5 flex flex-col gap-3 flex-grow">
         <h3 className="font-display font-bold text-lg leading-tight">
@@ -70,7 +76,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </p>
         <Button
           onClick={() =>
-            addItem({ id: product.id, name: product.name, price: product.price })
+            addItem({ id: product._id, name: product.name, price: product.price })
           }
           className="w-full rounded-xl mt-1"
           aria-label={`Agregar ${product.name} al carrito`}
@@ -86,7 +92,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 export const ProductsPage = () => {
   const heroImage = useHeroImage("heroProductsImage", "/images/hero/products-hero.jpg");
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>(["Todos"]);
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -95,45 +101,58 @@ export const ProductsPage = () => {
   const [retryCount, setRetryCount] = useState(0);
   const reduce = useReducedMotion();
 
-  logger.debug("API URL:", import.meta.env.VITE_API_URL);
-
   useEffect(() => {
-    const debounceTimer = setTimeout(async () => {
+    const fetchAllData = async () => {
       setIsLoading(true);
       setErrorMessage(null);
 
       try {
-        const data = await api.get<Product[]>("/products", {
-          query: { search: searchTerm || undefined, sortBy },
-        });
-        setAllProducts(data);
-        if (categories.length <= 1) {
-          setCategories([
-            "Todos",
-            ...new Set(data.map((p) => p.category.name)),
-          ]);
-        }
+        const productsQuery = `*[_type == "product"]{_id, name, description, price, imageUrl, "categoryName": category->name} | order(name asc)`;
+        const categoriesQuery = `*[_type == "productCategory"]{name} | order(name asc)`;
+        const [products, productCategories] = await Promise.all([
+          client.fetch<Product[]>(productsQuery),
+          client.fetch<{ name: string }[]>(categoriesQuery),
+        ]);
+        setAllProducts(products);
+        setCategories(["Todos", ...productCategories.map((c) => c.name)]);
       } catch (error) {
         logger.error("Error al obtener los productos:", error);
         setAllProducts([]);
         setErrorMessage(
-          error instanceof ApiError
-            ? error.userMessage
-            : "Los productos no están disponibles en este momento. Contáctanos directamente."
+          "Los productos no están disponibles en este momento. Contáctanos directamente."
         );
       } finally {
         setIsLoading(false);
       }
-    }, 300);
+    };
+    fetchAllData();
+  }, [retryCount]);
 
-    return () => clearTimeout(debounceTimer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, sortBy, retryCount]);
+  const filteredProducts = useMemo(() => {
+    let result = allProducts;
 
-  const filteredProducts =
-    activeCategory === "Todos"
-      ? allProducts
-      : allProducts.filter((p) => p.category.name === activeCategory);
+    if (activeCategory !== "Todos") {
+      result = result.filter((p) => p.categoryName === activeCategory);
+    }
+
+    if (searchTerm.trim()) {
+      const term = searchTerm.trim().toLowerCase();
+      result = result.filter((p) => p.name.toLowerCase().includes(term));
+    }
+
+    result = [...result].sort((a, b) => {
+      switch (sortBy) {
+        case "price_asc":
+          return a.price - b.price;
+        case "price_desc":
+          return b.price - a.price;
+        default:
+          return a.name.localeCompare(b.name);
+      }
+    });
+
+    return result;
+  }, [allProducts, activeCategory, searchTerm, sortBy]);
 
   return (
     <main className="-mt-20">
@@ -208,7 +227,7 @@ export const ProductsPage = () => {
         ) : errorMessage ? (
           <ErrorState
             title="Los productos no están disponibles en este momento"
-            description={`${errorMessage} Contáctanos directamente.`}
+            description={errorMessage}
             onRetry={() => setRetryCount((c) => c + 1)}
           />
         ) : filteredProducts.length === 0 ? (
@@ -226,7 +245,7 @@ export const ProductsPage = () => {
           >
             <AnimatePresence>
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product._id} product={product} />
               ))}
             </AnimatePresence>
           </motion.div>

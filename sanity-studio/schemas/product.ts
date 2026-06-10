@@ -32,6 +32,12 @@ export default {
       },
       description: 'La imagen principal del producto.',
     },
-    // Más adelante añadiremos aquí la categoría
+    {
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{type: 'productCategory'}],
+      description: 'La categoría a la que pertenece este producto.',
+    },
   ],
 }

@@ -176,7 +176,7 @@ export const AdminDashboard = () => {
         <div className="flex items-center gap-4">
           <Button asChild>
             <a
-              href="URL_DE_SANITY_STUDIO_AQUI"
+              href="https://ventpro.sanity.studio/"
               target="_blank"
               rel="noopener noreferrer"
             >
