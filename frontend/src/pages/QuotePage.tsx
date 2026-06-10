@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCartStore } from "@/store/cartStore";
+import { useHeroImage } from "@/lib/siteSettings";
 
 const formatPrice = (price: number) =>
   new Intl.NumberFormat("es-GT", {
@@ -19,6 +20,7 @@ const fieldClass =
   "rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all w-full";
 
 export const QuotePage = () => {
+  const heroImage = useHeroImage("heroQuoteImage", "/images/hero/quote-hero.jpg");
   const items = useCartStore((s) => s.items);
   const removeItem = useCartStore((s) => s.removeItem);
   const clearCart = useCartStore((s) => s.clearCart);
@@ -91,7 +93,7 @@ export const QuotePage = () => {
       {/* HERO */}
       <div
         className="relative h-[50vh] bg-cover bg-center flex items-center justify-center text-center"
-        style={{ backgroundImage: "url('/images/hero/quote-hero.jpg')" }}
+        style={{ backgroundImage: `url('${heroImage}')` }}
       >
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 text-white container pt-16">

@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Gem, Lightbulb, Users, Target, Eye, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fadeUp, staggerContainer } from "@/lib/animations";
+import { useHeroImage } from "@/lib/siteSettings";
 
 const VALUES = [
   {
@@ -36,6 +37,7 @@ const TIMELINE = [
 
 export const AboutPage = () => {
   const reduce = useReducedMotion();
+  const heroImage = useHeroImage("heroAboutImage", "/images/hero/about-hero.jpg");
 
   return (
     <main className="-mt-20">
@@ -43,7 +45,7 @@ export const AboutPage = () => {
       <div className="relative min-h-[40vh] flex items-center bg-primary text-primary-foreground overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-25"
-          style={{ backgroundImage: "url('/images/hero/about-hero.jpg')" }}
+          style={{ backgroundImage: `url('${heroImage}')` }}
         />
         <div className="absolute inset-0 bg-primary/90" />
         <div className="container relative z-10 mx-auto text-center pt-40 pb-20">

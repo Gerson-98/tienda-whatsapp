@@ -16,6 +16,7 @@ import { client, urlFor } from "@/sanityClient";
 import { Button } from "@/components/ui/button";
 import { fadeUp, staggerContainer } from "@/lib/animations";
 import { cn } from "@/lib/utils";
+import { useHeroImage } from "@/lib/siteSettings";
 
 const AnimatedCounter = ({ to }: { to: number }) => {
   const count = useMotionValue(0);
@@ -45,6 +46,7 @@ type Project = {
 type Category = { _id: string; name: string };
 
 export const ProjectsPage = () => {
+  const heroImage = useHeroImage("heroProjectsImage", "/images/hero/projects-hero.jpg");
   const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeCategory, setActiveCategory] = useState("Todos");
@@ -86,7 +88,7 @@ export const ProjectsPage = () => {
       {/* HERO */}
       <div
         className="relative h-[50vh] bg-cover bg-center flex items-center justify-center text-center"
-        style={{ backgroundImage: "url('/images/hero/projects-hero.jpg')" }}
+        style={{ backgroundImage: `url('${heroImage}')` }}
       >
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 text-white container pt-16">

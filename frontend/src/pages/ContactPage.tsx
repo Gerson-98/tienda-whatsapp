@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useHeroImage } from "@/lib/siteSettings";
 
 const fieldClass =
   "rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all w-full";
@@ -44,6 +45,7 @@ const InfoItem = ({
 };
 
 export const ContactPage = () => {
+  const heroImage = useHeroImage("heroContactImage", "/images/hero/contact-hero.jpg");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -91,7 +93,7 @@ export const ContactPage = () => {
       {/* HERO */}
       <div
         className="relative h-[45vh] bg-cover bg-center flex items-center justify-center text-center"
-        style={{ backgroundImage: "url('/images/hero/contact-hero.jpg')" }}
+        style={{ backgroundImage: `url('${heroImage}')` }}
       >
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 text-white container pt-16">

@@ -22,6 +22,7 @@ import { ErrorState } from "@/components/common/ErrorState";
 import { EmptyState } from "@/components/common/EmptyState";
 import { ProductCardSkeleton } from "@/components/products/ProductCardSkeleton";
 import { PackageSearch } from "lucide-react";
+import { useHeroImage } from "@/lib/siteSettings";
 
 type Product = {
   id: string;
@@ -83,6 +84,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 };
 
 export const ProductsPage = () => {
+  const heroImage = useHeroImage("heroProductsImage", "/images/hero/products-hero.jpg");
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("Todos");
@@ -138,7 +140,7 @@ export const ProductsPage = () => {
       {/* HERO */}
       <div
         className="relative h-[50vh] bg-cover bg-center flex items-center justify-center text-center"
-        style={{ backgroundImage: "url('/images/hero/products-hero.jpg')" }}
+        style={{ backgroundImage: `url('${heroImage}')` }}
       >
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 text-white container pt-16">

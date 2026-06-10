@@ -1,36 +1,53 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fadeUp, staggerContainer } from "@/lib/animations";
+import { client, urlFor } from "@/sanityClient";
+import { logger } from "@/lib/logger";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-const projects = [
+type GalleryItem = {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+};
+
+const FALLBACK_PROJECTS: GalleryItem[] = [
   {
+    id: "fallback-1",
     title: "Residencia Moderna",
     description: "Ventanas de alto aislamiento para una cocina de diseño.",
     imageUrl: "/images/projects/cocina-moderna.jpg",
   },
   {
+    id: "fallback-2",
     title: "Sala de Estar Luminosa",
     description: "Maximizando la luz natural con perfiles minimalistas.",
     imageUrl: "/images/projects/sala-amplia.jpg",
   },
   {
+    id: "fallback-3",
     title: "Exterior de Lujo",
     description: "Soluciones duraderas que complementan la arquitectura.",
     imageUrl: "/images/projects/exterior-lujoso.jpg",
   },
   {
+    id: "fallback-4",
     title: "Hogar Confortable",
     description: "Renovación completa en residencia suburbana.",
     imageUrl: "/images/projects/casa-suburbana.jpg",
   },
   {
+    id: "fallback-5",
     title: "Vistas al Balcón",
     description: "Puertas corredizas de PVC para un acceso suave.",
     imageUrl: "/images/projects/dormitorio-balcon.jpg",
   },
   {
+    id: "fallback-6",
     title: "Ambiente Acogedor",
     description: "Aislamiento superior para un confort inigualable.",
     imageUrl: "/images/projects/sala-acogedora.jpg",
@@ -39,6 +56,33 @@ const projects = [
 
 export const ProjectGallery = () => {
   const reduce = useReducedMotion();
+  const [projects, setProjects] = useState<GalleryItem[]>(FALLBACK_PROJECTS);
+
+  useEffect(() => {
+    let active = true;
+    const query = `*[_type == "project" && defined(imageUrl)] | order(_createdAt desc)[0...6]{_id, name, description, imageUrl}`;
+
+    client
+      .fetch(query)
+      .then((data: { _id: string; name: string; description: string; imageUrl: SanityImageSource }[]) => {
+        if (!active || !data?.length) return;
+        setProjects(
+          data.map((p) => ({
+            id: p._id,
+            title: p.name,
+            description: p.description,
+            imageUrl: urlFor(p.imageUrl).width(600).height(400).auto("format").quality(75).url(),
+          }))
+        );
+      })
+      .catch((error) => {
+        logger.error("Error al obtener proyectos para la galería:", error);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <section className="bg-background py-24">
@@ -68,7 +112,7 @@ export const ProjectGallery = () => {
         >
           {projects.map((p) => (
             <motion.div
-              key={p.title}
+              key={p.id}
               variants={reduce ? undefined : fadeUp}
               className="group rounded-2xl overflow-hidden border border-border bg-card"
             >

@@ -4,6 +4,7 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { LightRays } from "@/components/layout/LightRays";
+import { useHeroImage } from "@/lib/siteSettings";
 
 const makeSlide = (xOffset: number, delay = 0): Variants => ({
   hidden: { opacity: 0, y: 16, x: xOffset },
@@ -24,6 +25,10 @@ export const HeroCarousel = () => {
   const reduce = useReducedMotion();
   const fadeLeft = makeSlide(reduce ? 0 : -24);
   const fadeRight = makeSlide(reduce ? 0 : 24, 0.25);
+  const heroImage = useHeroImage(
+    "heroHomeImage",
+    "/images/hero/interior-minimalista.jpg"
+  );
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-primary flex items-center">
@@ -53,7 +58,7 @@ export const HeroCarousel = () => {
         style={{ clipPath: "polygon(12% 0, 100% 0, 100% 100%, 0% 100%)" }}
       >
         <img
-          src="/images/hero/interior-minimalista.jpg"
+          src={heroImage}
           alt="Interior con ventanas VentPro"
           className="w-full h-full object-cover"
           fetchPriority="high"
