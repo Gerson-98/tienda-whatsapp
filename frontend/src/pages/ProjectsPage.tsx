@@ -187,6 +187,8 @@ export const ProjectsPage = () => {
                         src={urlFor(project.imageUrl)
                           .width(600)
                           .height(400)
+                          .auto("format")
+                          .quality(75)
                           .url()}
                         alt={project.name}
                         className="aspect-video object-cover w-full transition-transform duration-500 group-hover:scale-105"
