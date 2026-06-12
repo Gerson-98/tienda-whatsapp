@@ -54,7 +54,11 @@
       "Bash(curl -sI -m 3 http://localhost:3000)",
       "Bash(echo \"RC3000=$?\")",
       "Bash(curl -sI -m 3 http://localhost:4173)",
-      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"cotizacion\",\"total_score\":33,\"p0_count\":0,\"p1_count\":0}' node \"C:/Users/NXKDHAL005/.claude/skills/impeccable/scripts/critique-storage.mjs\" write frontend-src-pages-quotepage-tsx .impeccable/critique/_tmp_cotizacion_recheck.md)"
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"cotizacion\",\"total_score\":33,\"p0_count\":0,\"p1_count\":0}' node \"C:/Users/NXKDHAL005/.claude/skills/impeccable/scripts/critique-storage.mjs\" write frontend-src-pages-quotepage-tsx .impeccable/critique/_tmp_cotizacion_recheck.md)",
+      "Bash(echo \"EXIT2:$?\")",
+      "Bash(echo \"EXIT3:$?\")",
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"galeria\",\"total_score\":18,\"p0_count\":2,\"p1_count\":1}' node \"C:/Users/NXKDHAL005/.claude/skills/impeccable/scripts/critique-storage.mjs\" write frontend-src-components-layout-projectgallery-tsx .impeccable/critique/_tmp_galeria.md)",
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"galeria\",\"total_score\":35,\"p0_count\":0,\"p1_count\":0}' node \"C:/Users/NXKDHAL005/.claude/skills/impeccable/scripts/critique-storage.mjs\" write frontend-src-components-layout-projectgallery-tsx .impeccable/critique/_tmp_galeria2.md)"
     ]
   }
 }
