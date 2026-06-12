@@ -7,6 +7,12 @@ import { LightRays } from "@/components/layout/LightRays";
 
 const DIFFERENTIATORS = [
   {
+    icon: HeartHandshake,
+    title: "Asesoría técnica sin costo",
+    description:
+      "Nuestro equipo visita tu proyecto, mide, recomienda y cotiza. Sin compromiso, desde una sola ventana hasta un desarrollo completo.",
+  },
+  {
     icon: ShieldCheck,
     title: "Garantía real de por vida",
     description:
@@ -17,12 +23,6 @@ const DIFFERENTIATORS = [
     title: "Entrega en 15 días hábiles",
     description:
       "Fabricamos bajo pedido con precisión. Sin retrasos ni excusas: te entregamos en el tiempo prometido o te devolvemos el anticipo.",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Asesoría técnica sin costo",
-    description:
-      "Nuestro equipo visita tu proyecto, mide, recomienda y cotiza. Sin compromiso. Porque la mejor venta es la que el cliente entiende.",
   },
 ];
 
@@ -50,16 +50,14 @@ export const WhyVentPro = () => {
       <LightRays />
 
       <div className="container mx-auto relative z-10">
-        {/* Cabecera */}
-        <div className="text-center mb-14">
-          <span className="text-secondary text-xs font-semibold uppercase tracking-widest">
-            Por qué elegirnos
-          </span>
-          <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter text-white">
+        {/* Cabecera asimétrica */}
+        <div className="mb-14 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 md:gap-12 md:items-end">
+          <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter text-white">
             Lo que nos hace diferentes
           </h2>
-          <p className="mt-4 text-white/60 font-light text-lg max-w-xl mx-auto">
-            No somos otro proveedor de ventanas. Somos el equipo que hace que tu inversión valga.
+          <p className="text-white/60 font-light text-lg md:text-right">
+            No somos otro proveedor de ventanas. Somos el equipo que hace que tu inversión,
+            en casa o en obra, valga.
           </p>
         </div>
 

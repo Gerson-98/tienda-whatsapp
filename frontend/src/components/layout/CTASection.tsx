@@ -6,7 +6,7 @@ export const CTASection = () => {
   return (
     <section className="py-24">
       <div className="container mx-auto">
-        <div className="relative overflow-hidden rounded-3xl bg-primary text-primary-foreground px-8 py-16 md:px-16 md:py-24">
+        <div className="relative overflow-hidden rounded-2xl bg-primary text-primary-foreground px-8 py-16 md:px-16 md:py-24">
           <div
             aria-hidden
             className="absolute inset-0 opacity-10"

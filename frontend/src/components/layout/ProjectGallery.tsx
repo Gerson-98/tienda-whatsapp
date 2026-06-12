@@ -93,7 +93,7 @@ export const ProjectGallery = () => {
               Portafolio
             </span>
             <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter">
-              Proyectos <span className="text-gradient">recientes</span>
+              Proyectos <span className="text-secondary">recientes</span>
             </h2>
           </div>
           <Button asChild variant="outline" className="rounded-full self-start md:self-auto">

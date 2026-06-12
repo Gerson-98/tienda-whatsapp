@@ -4,6 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const PROJECT_TYPES = [
+  { value: "residencial", label: "Residencial" },
+  { value: "comercial", label: "Comercial / desarrollo" },
+  { value: "otro", label: "Otro" },
+];
 
 const fieldClass =
   "rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all w-full";
@@ -13,6 +26,7 @@ export const ContactForm = () => {
     name: "",
     email: "",
     phone: "",
+    projectType: "residencial",
     message: "",
   });
   const [status, setStatus] = useState<
@@ -40,10 +54,19 @@ export const ContactForm = () => {
       );
       if (!response.ok) throw new Error("Falló el envío");
       setStatus("success");
-      setFormData({ name: "", email: "", phone: "", message: "" });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        projectType: "residencial",
+        message: "",
+      });
     } catch {
+      const projectTypeLabel =
+        PROJECT_TYPES.find((t) => t.value === formData.projectType)?.label ??
+        formData.projectType;
       const body = encodeURIComponent(
-        `Nombre: ${formData.name}\nEmail: ${formData.email}\nTel: ${formData.phone}\n\n${formData.message}`
+        `Nombre: ${formData.name}\nEmail: ${formData.email}\nTel: ${formData.phone}\nTipo de proyecto: ${projectTypeLabel}\n\n${formData.message}`
       );
       window.location.href = `mailto:cotizaciones@ventpro.com?subject=Contacto%20VentPro&body=${body}`;
       setStatus("error");
@@ -54,21 +77,22 @@ export const ContactForm = () => {
     <section className="bg-muted/40 py-24 border-y border-border">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">
-            Contáctanos
-          </span>
-          <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter">
-            Iniciemos tu <span className="text-gradient">proyecto</span>
+          <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
+            Iniciemos tu <span className="text-secondary">proyecto</span>
           </h2>
           <p className="text-muted-foreground mt-4 text-lg font-light max-w-md">
             Rellena el formulario y nuestro equipo de expertos se pondrá en
-            contacto contigo a la brevedad.
+            contacto contigo a la brevedad. Respondemos en menos de 24 horas.
           </p>
         </div>
 
         <div>
           {status === "success" ? (
-            <div className="bg-card rounded-2xl border border-border p-10 text-center">
+            <div
+              role="status"
+              aria-live="polite"
+              className="bg-card rounded-2xl border border-border p-10 text-center"
+            >
               <CheckCircle className="h-14 w-14 text-green-500 mx-auto mb-3" />
               <h3 className="font-display font-bold text-xl">
                 ¡Mensaje enviado!
@@ -132,6 +156,28 @@ export const ContactForm = () => {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
+                <Label htmlFor="projectType" className="text-sm font-medium">
+                  Tipo de proyecto
+                </Label>
+                <Select
+                  value={formData.projectType}
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({ ...prev, projectType: value }))
+                  }
+                >
+                  <SelectTrigger id="projectType" className={fieldClass}>
+                    <SelectValue placeholder="Selecciona una opción" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PROJECT_TYPES.map(({ value, label }) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-1.5">
                 <Label htmlFor="message" className="text-sm font-medium">
                   Mensaje
                 </Label>
@@ -158,7 +204,7 @@ export const ContactForm = () => {
                 )}
               </Button>
               {status === "error" && (
-                <p className="text-destructive text-sm text-center">
+                <p role="alert" className="text-destructive text-sm text-center">
                   Hubo un error. Abrimos tu cliente de correo como alternativa.
                 </p>
               )}

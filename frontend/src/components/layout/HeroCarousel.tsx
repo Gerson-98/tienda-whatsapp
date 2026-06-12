@@ -24,7 +24,6 @@ const containerVariants: Variants = {
 export const HeroCarousel = () => {
   const reduce = useReducedMotion();
   const fadeLeft = makeSlide(reduce ? 0 : -24);
-  const fadeRight = makeSlide(reduce ? 0 : 24, 0.25);
   const heroImage = useHeroImage(
     "heroHomeImage",
     "/images/hero/interior-minimalista.jpg"
@@ -66,6 +65,10 @@ export const HeroCarousel = () => {
           decoding="async"
           width={1200}
           height={800}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/images/hero/interior-minimalista.jpg";
+          }}
         />
         <div className="absolute inset-0 bg-primary/35" />
         {/* Marco de ventana — divisiones tipo cristal */}
@@ -84,11 +87,11 @@ export const HeroCarousel = () => {
           animate="visible"
           className="max-w-xl"
         >
-          {/* Badge con borde izquierdo */}
+          {/* Badge de marca */}
           <motion.div variants={fadeLeft}>
-            <div className="inline-flex items-center gap-2 border-l-4 border-secondary pl-4 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6">
               <span className="text-secondary text-sm font-semibold uppercase tracking-widest">
-                +200 proyectos en Guatemala
+                Fabricación propia desde 2010
               </span>
             </div>
           </motion.div>
@@ -134,23 +137,6 @@ export const HeroCarousel = () => {
                 Ver Proyectos <ChevronRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
-          </motion.div>
-
-          {/* Mini-stats */}
-          <motion.div
-            variants={fadeRight}
-            className="mt-12 flex flex-wrap gap-8 border-t border-white/15 pt-8"
-          >
-            {[
-              { val: "+200", lbl: "Proyectos" },
-              { val: "15+", lbl: "Años" },
-              { val: "100%", lbl: "Garantía" },
-            ].map((s) => (
-              <div key={s.lbl}>
-                <div className="font-display font-black text-2xl text-secondary">{s.val}</div>
-                <div className="text-xs text-white/55 uppercase tracking-widest mt-0.5">{s.lbl}</div>
-              </div>
-            ))}
           </motion.div>
         </motion.div>
       </div>

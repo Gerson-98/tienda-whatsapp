@@ -36,13 +36,12 @@ export const Testimonials = () => {
     <section className="bg-muted/50 py-24 border-y border-border">
       <div className="container mx-auto">
         <div className="text-center mb-16 max-w-2xl mx-auto">
-          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">
-            Testimonios
-          </span>
-          <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter">
-            La confianza de nuestros{" "}
-            <span className="text-gradient">clientes</span>
+          <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
+            La confianza de nuestros <span className="text-primary">clientes</span>
           </h2>
+          <p className="text-muted-foreground mt-4 text-lg font-light">
+            Historias reales de hogares y proyectos que ya confiaron en VentPro.
+          </p>
         </div>
         <motion.div
           variants={reduce ? undefined : staggerContainer}

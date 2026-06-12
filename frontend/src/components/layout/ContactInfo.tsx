@@ -20,10 +20,7 @@ export const ContactInfo = () => {
     <section className="bg-background py-24">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">
-            Visítanos
-          </span>
-          <h3 className="mt-3 font-display font-black text-3xl md:text-4xl tracking-tighter mb-8">
+          <h3 className="font-display font-black text-3xl md:text-4xl tracking-tighter mb-8">
             Estamos donde nos necesites
           </h3>
 

@@ -9,7 +9,26 @@
       "Bash(git commit *)",
       "Bash(xxd public/_redirects)",
       "Bash(git add *)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "Bash(node -e \"console.log\\(require\\('tailwindcss/package.json'\\).version\\)\")",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\NXKDHAL005\\\\PROYECTO WEB\\\\ventpro-pagina\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
+      "Bash(ls -la)",
+      "Bash(cat .sanity/runtime/*.json)",
+      "Bash(find . -maxdepth 3 -iname \"*studio*\" -not -path \"./node_modules/*\")",
+      "Bash(npx sanity *)",
+      "Bash(rm -rf node_modules package-lock.json)",
+      "Bash(npm install *)",
+      "Bash(ls backend *)",
+      "Bash(node -e \"const bcrypt=require\\('bcrypt'\\); bcrypt.hash\\('123', 10\\).then\\(h => console.log\\(h\\)\\)\")",
+      "Bash(node *)",
+      "Bash(ls .impeccable/critique/)",
+      "Bash(cat .impeccable/critique/ignore.md)",
+      "Bash(cat .impeccable/critique/frontend-src-pages-homepage-tsx.json)",
+      "Bash(netstat -ano)",
+      "Bash(echo \"EXIT_CODE=$?\")",
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"inicio\",\"total_score\":28,\"p0_count\":0,\"p1_count\":1}' node \"C:/Users/NXKDHAL005/.claude/skills/impeccable/scripts/critique-storage.mjs\" write frontend-src-pages-homepage-tsx .impeccable/critique/.tmp-body.md)"
     ]
   }
 }

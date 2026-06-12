@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-12T00:00:00.000Z",
+  "title": "Design System: VentPro",
+  "extensions": {
+    "colorMeta": {
+      "glass-blue": {
+        "role": "primary",
+        "displayName": "Deep Glass Blue",
+        "canonical": "hsl(203 55% 32%)",
+        "tonalRamp": ["#0E232F", "#193F57", "#255C7E", "#3079A6", "#4597C9", "#71AFD6", "#A0CAE3", "#D7E9F4"]
+      },
+      "glass-blue-dark": {
+        "role": "primary-dark",
+        "displayName": "Deep Glass Blue (dark mode)",
+        "canonical": "hsl(199 80% 50%)",
+        "tonalRamp": ["#06212F", "#0B3F57", "#125E80", "#187CA8", "#1AA5E6", "#4FBCEE", "#8FD6F5", "#D2EFFC"]
+      },
+      "golden-amber": {
+        "role": "secondary",
+        "displayName": "Golden Hour Amber",
+        "canonical": "hsl(35 92% 51%)",
+        "tonalRamp": ["#3B2302", "#6C4104", "#9D5E07", "#CE7C09", "#F59A19", "#F8B14F", "#FACB89", "#FDE9CE"]
+      },
+      "golden-amber-dark": {
+        "role": "secondary-dark",
+        "displayName": "Golden Hour Amber (dark mode)",
+        "canonical": "hsl(35 92% 56%)",
+        "tonalRamp": ["#402602", "#734505", "#A66308", "#D9810B", "#F6A028", "#F9B658", "#FBCD8E", "#FDEAD2"]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas",
+        "canonical": "hsl(210 20% 96%)",
+        "tonalRamp": ["#15181A", "#272D31", "#3A4248", "#525C64", "#6F7A82", "#9AA4AB", "#CBD2D6", "#F3F5F7"]
+      },
+      "canvas-dark": {
+        "role": "neutral-dark",
+        "displayName": "Canvas (dark mode)",
+        "canonical": "hsl(215 35% 8%)",
+        "tonalRamp": ["#0D131C", "#141E2D", "#1C2A3E", "#243650", "#2C4262", "#345077", "#3C5C8C", "#4567A0"]
+      },
+      "ink": {
+        "role": "on-neutral",
+        "displayName": "Ink",
+        "canonical": "hsl(215 35% 14%)",
+        "tonalRamp": ["#0B1017", "#172230", "#243549", "#314861", "#3E5B7A", "#4C6F93", "#6D8CAD", "#A6BDD3"]
+      },
+      "surface": {
+        "role": "neutral-container",
+        "displayName": "Surface",
+        "canonical": "hsl(210 20% 93%)",
+        "tonalRamp": ["#13161A", "#262C31", "#39424A", "#515D67", "#6F7C87", "#9AA7B1", "#CBD5DC", "#EAEDF1"]
+      },
+      "surface-tint": {
+        "role": "accent-container",
+        "displayName": "Surface Tint",
+        "canonical": "hsl(203 50% 90%)",
+        "tonalRamp": ["#101B22", "#1D323F", "#2B4A5C", "#3A6480", "#4F82A3", "#7FA9C4", "#B6D2E3", "#D9E8F2"]
+      },
+      "surface-tint-ink": {
+        "role": "on-accent-container",
+        "displayName": "Surface Tint Ink",
+        "canonical": "hsl(203 55% 25%)",
+        "tonalRamp": ["#081117", "#0F202C", "#1D4863", "#27607F", "#3A7CA0", "#5C9CBE", "#94C2DA", "#D2E9F3"]
+      },
+      "mist": {
+        "role": "neutral-variant",
+        "displayName": "Mist",
+        "canonical": "hsl(210 15% 90%)",
+        "tonalRamp": ["#1A1F23", "#303841", "#45525E", "#5B6B7B", "#758799", "#95A3B1", "#B9C2CB", "#E2E6E9"]
+      },
+      "mist-ink": {
+        "role": "on-neutral-variant",
+        "displayName": "Mist Ink",
+        "canonical": "hsl(215 15% 45%)",
+        "tonalRamp": ["#13171B", "#262E35", "#3A444E", "#4F5C68", "#627084", "#8493A4", "#B4C0CC", "#E0E7ED"]
+      },
+      "hairline": {
+        "role": "outline",
+        "displayName": "Hairline",
+        "canonical": "hsl(210 15% 85%)",
+        "tonalRamp": ["#181C1F", "#2E3539", "#434F55", "#596873", "#728390", "#94A4AF", "#BFC9D0", "#D3D9DE"]
+      },
+      "alert": {
+        "role": "error",
+        "displayName": "Alert Red",
+        "canonical": "hsl(0 84.2% 60.2%)",
+        "tonalRamp": ["#330303", "#5C0606", "#860909", "#B30D0D", "#E03434", "#EF4444", "#F58A8A", "#FBD0D0"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines, page titles, and section headlines. Plus Jakarta Sans at weight 700-800, tracking-tighter, text-wrap: balance."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraphs, descriptions, form labels. DM Sans at weight 400-500, leading-relaxed, ss01/cv11 font features enabled."
+      }
+    },
+    "shadows": [
+      {
+        "name": "whisper",
+        "value": "0 1px 2px 0 rgba(0,0,0,0.05)",
+        "purpose": "The only shadow in the system. Cards, buttons, and the scrolled header — a soft 1px lift, never theatrical."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "purpose": "Default easing for fade/slide reveal animations (fadeUp, hero slides)."
+      },
+      {
+        "name": "duration-base",
+        "value": "0.3s",
+        "purpose": "Header background/blur transition on scroll."
+      },
+      {
+        "name": "duration-sheen",
+        "value": "0.85s",
+        "purpose": "glass-sheen diagonal light sweep on hover/focus."
+      },
+      {
+        "name": "duration-glow",
+        "value": "0.4s",
+        "purpose": "glass-glow radial glow fade-in on hover."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main conversion CTA ('Cotizar ahora'). The one deliberate pill shape in the system.",
+      "html": "<button class=\"ds-btn-primary\">Cotizar ahora</button>",
+      "css": ".ds-btn-primary { background: #255C7E; color: #FFFFFF; border: none; border-radius: 9999px; padding: 0 24px; height: 40px; font-family: 'DM Sans', system-ui, sans-serif; font-weight: 500; font-size: 0.875rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background-color 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); } .ds-btn-primary:hover { background: rgba(37,92,126,0.9); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #F3F5F7, 0 0 0 4px #255C7E; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action — transparent fill with a 2px Deep Glass Blue border, inverts on hover.",
+      "html": "<button class=\"ds-btn-outline\">Ver proyectos</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #255C7E; border: 2px solid #255C7E; border-radius: 12px; padding: 0 22px; height: 40px; font-family: 'DM Sans', system-ui, sans-serif; font-weight: 500; font-size: 0.875rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; } .ds-btn-outline:hover { background: #255C7E; color: #FFFFFF; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #F3F5F7, 0 0 0 4px #255C7E; }"
+    },
+    {
+      "name": "Feature Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Standard content card — pillar/value cards, stat panels. Flat, bordered, whisper shadow, icon chip in Surface Tint.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-icon\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#255C7E\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2l3 6 6 1-4.5 4.5L17 20l-5-3-5 3 1.5-6.5L4 9l6-1z\"/></svg></div><h3 class=\"ds-card-title\">Calidad insuperable</h3><p class=\"ds-card-text\">Materiales de primera y técnicas probadas para un producto final que perdure.</p></div>",
+      "css": ".ds-card { background: #EAEDF1; border: 1px solid #D3D9DE; border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); font-family: 'DM Sans', system-ui, sans-serif; } .ds-card-icon { display: inline-flex; background: #D9E8F2; color: #255C7E; border-radius: 12px; padding: 12px; margin-bottom: 16px; } .ds-card-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; color: #172230; margin: 0 0 12px; } .ds-card-text { font-size: 0.875rem; line-height: 1.6; color: #627084; margin: 0; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Standard form field — quote/contact forms.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Tu nombre\" />",
+      "css": ".ds-input { height: 40px; width: 100%; border-radius: 10px; border: 1px solid #D3D9DE; background: #F3F5F7; color: #172230; padding: 8px 12px; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.875rem; box-sizing: border-box; transition: box-shadow 0.2s ease; } .ds-input::placeholder { color: #627084; } .ds-input:focus-visible { outline: none; box-shadow: 0 0 0 2px #F3F5F7, 0 0 0 4px #255C7E; }"
+    },
+    {
+      "name": "Site Header",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Fixed header — transparent over the hero, frosts to a translucent blurred bar with hairline border past 60px scroll.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-logo\" href=\"#\">Vent<span class=\"ds-logo-accent\">Pro</span></a><nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-link--active\" href=\"#\">Inicio</a><a class=\"ds-nav-link\" href=\"#\">Proyectos</a><a class=\"ds-nav-link\" href=\"#\">Productos</a></nav><button class=\"ds-btn-primary\">Cotizar ahora</button></header>",
+      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 80px; padding: 0 24px; background: rgba(243,245,247,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #D3D9DE; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); font-family: 'DM Sans', system-ui, sans-serif; } .ds-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; color: #172230; text-decoration: none; } .ds-logo-accent { color: #F5950F; } .ds-nav { display: flex; gap: 32px; } .ds-nav-link { position: relative; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #172230; text-decoration: none; padding-bottom: 4px; } .ds-nav-link::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; } .ds-nav-link:hover::after, .ds-nav-link--active::after { transform: scaleX(1); } .ds-nav-link--active { color: #255C7E; } .ds-btn-primary { background: #255C7E; color: #FFFFFF; border: none; border-radius: 9999px; padding: 0 24px; height: 40px; font-weight: 500; font-size: 0.875rem; cursor: pointer; }"
+    },
+    {
+      "name": "Glass Glow Panel",
+      "kind": "custom",
+      "refersTo": "glass-glow",
+      "description": "Signature interactive surface — a radial glow in Deep Glass Blue follows the cursor, fading in on hover. Used on feature panels and hero imagery.",
+      "html": "<div class=\"ds-glow-panel\"><span class=\"ds-glow-label\">Vista a través de ventana</span></div>",
+      "css": ".ds-glow-panel { position: relative; isolation: isolate; border-radius: 16px; border: 1px solid #D3D9DE; background: #EAEDF1; padding: 32px; overflow: hidden; font-family: 'DM Sans', system-ui, sans-serif; color: #172230; } .ds-glow-panel::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(320px circle at 50% 50%, rgba(37,92,126,0.18), transparent 70%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 1; } .ds-glow-panel:hover::before { opacity: 1; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Glass Pavilion",
+    "overview": "VentPro's interface is the digital equivalent of a manufacturer's flagship showroom: a glass-walled pavilion where light, structure, and material quality are the whole pitch. Every surface should read as architectural — deep, serious blue as the building's frame, warm amber as the sunlight passing through the glazing it sells. The system already encodes this in its CSS comments (\"Celeste profundo y serio — identidad de marca\", \"Ambar cálido — luz solar atravesando el vidrio\"); this spec formalizes and extends that intent toward the precision of Schüco and Reynaers and the interaction polish of Stripe. Density stays moderate — generous section padding (80px), confident typographic hierarchy, and restrained color use (blue + amber, nothing else competes). Depth comes from light and translucency (glass-sheen sweeps, cursor-following glass-glow, animated light rays, a header that frosts on scroll) rather than heavy drop shadows or decoration. The system explicitly rejects the generic AI/template SaaS look (gradient-text headlines, tiny uppercase tracked eyebrows on every section, numbered 01/02/03 scaffolding, identical three-card grids, hero-metric clichés, cream/sand backgrounds) and the cheap local-competitor look (cluttered layouts, stock-photo heavy heroes, low-contrast or busy color use, dated card grids).",
+    "keyCharacteristics": [
+      "Two-color discipline: Deep Glass Blue carries structure and authority; Golden Hour Amber is the rare, deliberate accent (badges, underlines, highlights).",
+      "Architectural typography: Plus Jakarta Sans at heavy weights for display, tracked tight, paired with DM Sans for calm, readable body copy.",
+      "Light-as-material: glass-sheen, glass-glow, and light-ray motifs are the system's signature motion language — never purely decorative, always reinforcing 'light through glass'.",
+      "Soft, glass-layered elevation: flat-leaning surfaces, subtle borders, depth via blur/translucency rather than shadow stacks.",
+      "Full light/dark support: the same roles (background, card, primary, secondary, accent) re-map for a cool night palette without changing the underlying structure."
+    ],
+    "rules": [
+      { "name": "The Two-Color Rule", "body": "Only Deep Glass Blue and Golden Hour Amber carry brand meaning. Every other color on screen is a neutral from the Canvas/Surface/Mist/Hairline ramp. If a third 'brand' color appears, it's a mistake.", "section": "colors" },
+      { "name": "The Lit-Glass Dark Mode Rule", "body": "Dark mode is not 'light mode dimmed.' Canvas drops to near-black, but Primary and Secondary both get brighter and more saturated — the glass is lit from within, not muted by the dark.", "section": "colors" },
+      { "name": "The Tight-but-not-Touching Rule", "body": "Display headings track to about -0.03em (tracking-tighter), never beyond -0.04em. Letters stay crisp and architectural without touching.", "section": "typography" },
+      { "name": "The Light-Not-Shadow Rule", "body": "When something needs to feel elevated or premium, reach for translucency, blur, or a glow effect before reaching for a heavier shadow. Depth is expressed as 'more light,' not 'more shadow.'", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep brand color to Deep Glass Blue + Golden Hour Amber only; every other surface is a neutral from the Canvas/Surface/Mist/Hairline ramp.",
+      "Do use rounded-full only for primary conversion CTAs (\"Cotizar ahora\" and equivalents); everything else uses rounded-lg/rounded-md/rounded-2xl.",
+      "Do express elevation/premium feel through light — glass-sheen, glass-glow, backdrop-blur, light-rays — before reaching for a heavier shadow.",
+      "Do gate every sheen/glow/ray animation behind prefers-reduced-motion, matching the existing pattern in index.css and useReducedMotion().",
+      "Do keep body copy in DM Sans at leading-relaxed, capped near 65–75ch, in Spanish (es-GT).",
+      "Do track display headings to about -0.03em (tracking-tighter) — crisp but not touching."
+    ],
+    "donts": [
+      "Don't introduce the 'generic AI/template SaaS look': tiny uppercase tracked eyebrows above every section, numbered 01/02/03 section markers, identical three-card grids, hero-metric-stat clichés, or cream/sand body backgrounds.",
+      "Don't ship anything that reads as the 'cheap local-competitor' pattern: cluttered layouts, stock-photo-heavy heroes, low-contrast text, busy or inconsistent spacing.",
+      "Don't add new 'brand' colors beyond Deep Glass Blue and Golden Hour Amber — new accents are a Two-Color Rule violation.",
+      "Don't stack heavy, dark, multi-layer drop shadows on cards or buttons — Whisper (shadow-sm) is the ceiling.",
+      "Don't use border-left/border-right accent stripes on cards or callouts.",
+      "Don't rely on .text-gradient (gradient-fill headline text) for new work — it's on the AI-template ban list. The two current uses (AboutPage timeline/pillars headings) are legacy candidates for a future polish/quieter pass; prefer solid Deep Glass Blue or Golden Hour Amber for emphasis instead.",
+      "Don't let dark mode read as 'light mode but grey' — Primary/Secondary must stay bright and saturated per the Lit-Glass Dark Mode Rule."
+    ]
+  }
+}
