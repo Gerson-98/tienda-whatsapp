@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ContactInfo } from "@/components/layout/ContactInfo";
 
 const PROJECT_TYPES = [
   { value: "residencial", label: "Residencial" },
@@ -19,7 +20,7 @@ const PROJECT_TYPES = [
 ];
 
 const fieldClass =
-  "rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all w-full";
+  "rounded-md border border-input bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all w-full";
 
 export const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -76,14 +77,18 @@ export const ContactForm = () => {
   return (
     <section className="bg-muted/40 py-24 border-y border-border">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        <div>
-          <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
-            Iniciemos tu <span className="text-secondary">proyecto</span>
-          </h2>
-          <p className="text-muted-foreground mt-4 text-lg font-light max-w-md">
-            Rellena el formulario y nuestro equipo de expertos se pondrá en
-            contacto contigo a la brevedad. Respondemos en menos de 24 horas.
-          </p>
+        <div className="lg:sticky lg:top-24 flex flex-col gap-10">
+          <div>
+            <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
+              Hablemos de tu <span className="text-secondary">proyecto</span>
+            </h2>
+            <p className="text-muted-foreground mt-4 text-lg font-light">
+              ¿Listo para transformar tu espacio? Escríbenos sin compromiso y
+              te respondemos en menos de 24 horas con una propuesta a tu medida.
+            </p>
+          </div>
+
+          <ContactInfo />
         </div>
 
         <div>

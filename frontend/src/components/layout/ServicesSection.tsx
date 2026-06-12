@@ -89,7 +89,8 @@ export const ServicesSection = () => {
       <div className="container mx-auto">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
-            Nuestras soluciones en <span className="text-primary">PVC</span>
+            Nuestras soluciones en{" "}
+            <span className="bg-primary/10 text-primary px-2 py-0.5 rounded-md">PVC</span>
           </h2>
           <p className="text-muted-foreground mt-4 text-lg font-light">
             Productos diseñados para el confort, la seguridad y la estética — en tu hogar

@@ -1,6 +1,14 @@
 // Sección diferenciadora — rompe el ritmo visual, contrasta con el fondo claro
+import { useRef, useEffect } from "react";
 import { ShieldCheck, Zap, HeartHandshake } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useInView,
+  useMotionValue,
+  useTransform,
+  animate,
+} from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/animations";
 import { useGlassGlow } from "@/lib/useGlassGlow";
 import { LightRays } from "@/components/layout/LightRays";
@@ -25,6 +33,36 @@ const DIFFERENTIATORS = [
       "Fabricamos bajo pedido con precisión. Sin retrasos ni excusas: te entregamos en el tiempo prometido o te devolvemos el anticipo.",
   },
 ];
+
+const STATS = [
+  { value: 200, prefix: "+", label: "Proyectos completados" },
+  { value: 15, suffix: "+", label: "Años de experiencia" },
+  { value: 100, suffix: "%", label: "Satisfacción garantizada" },
+  { value: 18, label: "Departamentos atendidos" },
+];
+
+const AnimatedNumber = ({ to, prefix = "", suffix = "" }: { to: number; prefix?: string; suffix?: string }) => {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.round(v));
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    if (!inView) return;
+    if (reduce) { count.set(to); return; }
+    const controls = animate(count, to, { duration: 1.8, ease: "easeOut" });
+    return () => controls.stop();
+  }, [inView, count, to, reduce]);
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {prefix}
+      <motion.span>{rounded}</motion.span>
+      {suffix}
+    </span>
+  );
+};
 
 export const WhyVentPro = () => {
   const reduce = useReducedMotion();
@@ -51,7 +89,7 @@ export const WhyVentPro = () => {
 
       <div className="container mx-auto relative z-10">
         {/* Cabecera asimétrica */}
-        <div className="mb-14 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 md:gap-12 md:items-end">
+        <div className="mb-10 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 md:gap-12 md:items-end">
           <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter text-white">
             Lo que nos hace diferentes
           </h2>
@@ -59,6 +97,20 @@ export const WhyVentPro = () => {
             No somos otro proveedor de ventanas. Somos el equipo que hace que tu inversión,
             en casa o en obra, valga.
           </p>
+        </div>
+
+        {/* Cifras que respaldan la promesa */}
+        <div className="mb-14 flex flex-wrap gap-x-10 gap-y-6 pb-10 border-b border-white/10">
+          {STATS.map((stat) => (
+            <div key={stat.label} className="flex items-baseline gap-2.5">
+              <span className="font-display font-black text-3xl md:text-4xl text-white tracking-tighter">
+                <AnimatedNumber to={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+              </span>
+              <span className="text-sm text-white/55 leading-tight max-w-[8rem]">
+                {stat.label}
+              </span>
+            </div>
+          ))}
         </div>
 
         {/* Cards */}

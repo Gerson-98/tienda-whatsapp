@@ -13,6 +13,7 @@ import type { Project } from "@/types/project";
 export const ProjectGallery = () => {
   const reduce = useReducedMotion();
   const [projects, setProjects] = useState<Project[] | null>(null);
+  const [fetchFailed, setFetchFailed] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -27,6 +28,7 @@ export const ProjectGallery = () => {
       .catch((error) => {
         if (!active) return;
         logger.error("Error al obtener proyectos para la galería:", error);
+        setFetchFailed(true);
         setProjects([]);
       });
 
@@ -35,14 +37,14 @@ export const ProjectGallery = () => {
     };
   }, []);
 
-  if (projects?.length === 0) return null;
+  if (projects?.length === 0 && !fetchFailed) return null;
 
   return (
     <section className="bg-background py-20">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
-            Proyectos <span className="text-secondary">recientes</span>
+            Proyectos recientes
           </h2>
           <Button asChild variant="outline" className="rounded-full self-start md:self-auto">
             <Link to="/proyectos">
@@ -57,6 +59,11 @@ export const ProjectGallery = () => {
               <ProjectCardSkeleton key={i} />
             ))}
           </div>
+        ) : fetchFailed ? (
+          <p className="text-muted-foreground">
+            No pudimos cargar los proyectos en este momento. Mientras tanto, explora el
+            catálogo completo en la sección de proyectos.
+          </p>
         ) : (
           <motion.div
             variants={reduce ? undefined : staggerContainer}
