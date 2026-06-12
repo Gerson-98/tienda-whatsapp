@@ -1,12 +1,7 @@
-import { Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore, useCartTotal, type CartItem } from "@/store/cartStore";
-
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat("es-GT", {
-    style: "currency",
-    currency: "GTQ",
-  }).format(price);
+import { formatPrice } from "@/lib/format";
 
 /**
  * Resumen de productos seleccionados desde el catálogo. Se inserta encima
@@ -16,6 +11,7 @@ const formatPrice = (price: number) =>
 export const QuoteCartSummary = () => {
   const items = useCartStore((s) => s.items);
   const removeItem = useCartStore((s) => s.removeItem);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
   const clearCart = useCartStore((s) => s.clearCart);
   const total = useCartTotal();
 
@@ -41,27 +37,50 @@ export const QuoteCartSummary = () => {
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex items-center justify-between py-2 gap-3"
+            className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-3"
           >
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium truncate">{item.name}</p>
               <p className="text-xs text-muted-foreground">
-                {item.quantity} × {formatPrice(item.price)}
+                {formatPrice(item.price)} c/u
               </p>
             </div>
-            <span className="text-sm font-medium tabular-nums">
-              {formatPrice(item.price * item.quantity)}
-            </span>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => removeItem(item.id)}
-              aria-label={`Quitar ${item.name}`}
-              className="h-8 w-8 text-muted-foreground hover:text-destructive"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center justify-between sm:justify-end gap-3">
+              <div className="flex items-center gap-1.5 rounded-full border border-border">
+                <button
+                  type="button"
+                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  aria-label={`Disminuir cantidad de ${item.name}`}
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
+                >
+                  <Minus className="h-3.5 w-3.5" />
+                </button>
+                <span className="w-6 text-center text-sm tabular-nums">
+                  {item.quantity}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  aria-label={`Aumentar cantidad de ${item.name}`}
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                </button>
+              </div>
+              <span className="text-sm font-medium tabular-nums w-20 text-right">
+                {formatPrice(item.price * item.quantity)}
+              </span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => removeItem(item.id)}
+                aria-label={`Quitar ${item.name}`}
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
           </li>
         ))}
       </ul>

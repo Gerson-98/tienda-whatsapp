@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Search, ShoppingCart, ArrowRight, PackageSearch } from "lucide-react";
+import { Search, ArrowRight, PackageSearch, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,87 +13,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCartStore, useIsInCart } from "@/store/cartStore";
-import { fadeUp, staggerContainer } from "@/lib/animations";
+import { staggerContainer } from "@/lib/animations";
 import { cn } from "@/lib/utils";
-import { client, urlFor } from "@/sanityClient";
+import { client } from "@/sanityClient";
 import { logger } from "@/lib/logger";
 import { ErrorState } from "@/components/common/ErrorState";
 import { EmptyState } from "@/components/common/EmptyState";
+import { ProductCard } from "@/components/products/ProductCard";
 import { ProductCardSkeleton } from "@/components/products/ProductCardSkeleton";
 import { useHeroImage } from "@/lib/siteSettings";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-
-type Product = {
-  _id: string;
-  name: string;
-  description: string | null;
-  imageUrl: SanityImageSource | null;
-  price: number;
-  categoryName: string | null;
-};
-
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat("es-GT", {
-    style: "currency",
-    currency: "GTQ",
-  }).format(price);
-
-const ProductCard = ({ product }: { product: Product }) => {
-  const addItem = useCartStore((s) => s.addItem);
-  const inCart = useIsInCart(product._id);
-  const imageSrc = product.imageUrl
-    ? urlFor(product.imageUrl).width(500).height(500).auto("format").quality(75).url()
-    : "/images/placeholder.png";
-
-  return (
-    <motion.div
-      variants={fadeUp}
-      whileHover={{ scale: 1.02 }}
-      className="group bg-card rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col"
-    >
-      <div className="relative">
-        <img
-          src={imageSrc}
-          alt={product.name}
-          className="aspect-square object-cover w-full"
-        />
-        {product.categoryName && (
-          <span className="absolute top-3 left-3 bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-xs font-medium">
-            {product.categoryName}
-          </span>
-        )}
-      </div>
-      <div className="p-5 flex flex-col gap-3 flex-grow">
-        <h3 className="font-display font-bold text-lg leading-tight">
-          {product.name}
-        </h3>
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {product.description}
-        </p>
-        <p className="text-xl font-bold text-primary mt-auto">
-          {formatPrice(product.price)}
-        </p>
-        <Button
-          onClick={() =>
-            addItem({ id: product._id, name: product.name, price: product.price })
-          }
-          className="w-full rounded-xl mt-1"
-          aria-label={`Agregar ${product.name} al carrito`}
-        >
-          <ShoppingCart className="h-4 w-4" />
-          {inCart ? "Agregar otro" : "Agregar al carrito"}
-        </Button>
-      </div>
-    </motion.div>
-  );
-};
+import type { Product } from "@/types/product";
 
 export const ProductsPage = () => {
   const heroImage = useHeroImage("heroProductsImage", "/images/hero/products-hero.jpg");
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>(["Todos"]);
-  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [categories, setCategories] = useState<string[]>([]);
+  const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -114,7 +49,7 @@ export const ProductsPage = () => {
           client.fetch<{ name: string }[]>(categoriesQuery),
         ]);
         setAllProducts(products);
-        setCategories(["Todos", ...productCategories.map((c) => c.name)]);
+        setCategories(productCategories.map((c) => c.name));
       } catch (error) {
         logger.error("Error al obtener los productos:", error);
         setAllProducts([]);
@@ -131,8 +66,10 @@ export const ProductsPage = () => {
   const filteredProducts = useMemo(() => {
     let result = allProducts;
 
-    if (activeCategory !== "Todos") {
-      result = result.filter((p) => p.categoryName === activeCategory);
+    if (activeCategories.length > 0) {
+      result = result.filter(
+        (p) => p.categoryName !== null && activeCategories.includes(p.categoryName)
+      );
     }
 
     if (searchTerm.trim()) {
@@ -152,7 +89,22 @@ export const ProductsPage = () => {
     });
 
     return result;
-  }, [allProducts, activeCategory, searchTerm, sortBy]);
+  }, [allProducts, activeCategories, searchTerm, sortBy]);
+
+  const toggleCategory = (category: string) => {
+    setActiveCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  const hasActiveFilters = activeCategories.length > 0 || searchTerm.trim() !== "";
+
+  const clearFilters = () => {
+    setActiveCategories([]);
+    setSearchTerm("");
+  };
 
   return (
     <main className="-mt-20">
@@ -164,7 +116,7 @@ export const ProductsPage = () => {
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 text-white container pt-16">
           <h1 className="font-display font-black text-5xl md:text-6xl tracking-tighter">
-            Nuestro <span className="text-gradient">catálogo</span>
+            Nuestro <span className="text-secondary">catálogo</span>
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-white/85 text-lg font-light">
             Soluciones premium en ventanas, puertas y sistemas de PVC y aluminio.
@@ -197,21 +149,55 @@ export const ProductsPage = () => {
             </Select>
           </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {categories.map((category) => (
+          {categories.length > 0 && (
+            <div className="flex gap-2 overflow-x-auto pb-1">
               <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => setActiveCategories([])}
+                aria-pressed={activeCategories.length === 0}
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium cursor-pointer transition-colors whitespace-nowrap",
-                  activeCategory === category
+                  activeCategories.length === 0
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted hover:bg-muted/80 text-foreground"
                 )}
               >
-                {category}
+                Todos
               </button>
-            ))}
+              {categories.map((category) => {
+                const isActive = activeCategories.includes(category);
+                return (
+                  <button
+                    key={category}
+                    onClick={() => toggleCategory(category)}
+                    aria-pressed={isActive}
+                    className={cn(
+                      "rounded-full px-4 py-2 text-sm font-medium cursor-pointer transition-colors whitespace-nowrap",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted hover:bg-muted/80 text-foreground"
+                    )}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
+            <span>
+              {filteredProducts.length}{" "}
+              {filteredProducts.length === 1 ? "producto encontrado" : "productos encontrados"}
+            </span>
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="flex items-center gap-1 font-medium text-foreground hover:text-primary transition-colors"
+              >
+                <X className="h-3.5 w-3.5" />
+                Limpiar filtros
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -235,6 +221,14 @@ export const ProductsPage = () => {
             icon={PackageSearch}
             title="No encontramos productos"
             description="Prueba con otra búsqueda o categoría."
+            action={
+              hasActiveFilters ? (
+                <Button variant="outline" className="rounded-full" onClick={clearFilters}>
+                  <X className="h-4 w-4" />
+                  Limpiar filtros
+                </Button>
+              ) : undefined
+            }
           />
         ) : (
           <motion.div
@@ -254,7 +248,7 @@ export const ProductsPage = () => {
 
       {/* CTA */}
       <div className="container mx-auto pb-20">
-        <div className="bg-muted/50 rounded-3xl border border-border p-12 text-center">
+        <div className="bg-muted/50 rounded-2xl border border-border p-12 text-center">
           <h2 className="font-display font-black text-3xl md:text-4xl tracking-tighter mb-4">
             ¿No estás seguro de qué elegir?
           </h2>
