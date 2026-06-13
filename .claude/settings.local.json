@@ -63,7 +63,9 @@
       "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"inicio\",\"total_score\":28,\"p0_count\":1,\"p1_count\":1,\"p2_count\":2}' node \"C:/Users/NXKDHAL005/.claude/skills/impeccable/scripts/critique-storage.mjs\" write frontend-src-pages-homepage-tsx .impeccable/critique/_tmp_inicio.md)",
       "Bash(echo \"EXIT=$?\")",
       "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"contacto\",\"total_score\":18,\"p0_count\":1,\"p1_count\":2}' node \"C:\\\\Users\\\\NXKDHAL005\\\\.claude\\\\skills\\\\impeccable\\\\scripts\\\\critique-storage.mjs\" write frontend-src-pages-contactpage-tsx .impeccable-critique-tmp-contacto.md)",
-      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"contacto\",\"total_score\":27,\"p0_count\":0,\"p1_count\":0}' node \"C:\\\\Users\\\\NXKDHAL005\\\\.claude\\\\skills\\\\impeccable\\\\scripts\\\\critique-storage.mjs\" write frontend-src-pages-contactpage-tsx .impeccable-critique-tmp-contacto2.md)"
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"contacto\",\"total_score\":27,\"p0_count\":0,\"p1_count\":0}' node \"C:\\\\Users\\\\NXKDHAL005\\\\.claude\\\\skills\\\\impeccable\\\\scripts\\\\critique-storage.mjs\" write frontend-src-pages-contactpage-tsx .impeccable-critique-tmp-contacto2.md)",
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"nosotros\",\"total_score\":26,\"p0_count\":0,\"p1_count\":2}' node \"C:\\\\Users\\\\NXKDHAL005\\\\.claude\\\\skills\\\\impeccable\\\\scripts\\\\critique-storage.mjs\" write frontend-src-pages-aboutpage-tsx .impeccable-critique-tmp-nosotros.md)",
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"nosotros\",\"total_score\":31,\"p0_count\":0,\"p1_count\":0}' node \"C:\\\\Users\\\\NXKDHAL005\\\\.claude\\\\skills\\\\impeccable\\\\scripts\\\\critique-storage.mjs\" write frontend-src-pages-aboutpage-tsx \".impeccable/critique/_tmp_aboutpage_postfix.md\")"
     ]
   }
 }

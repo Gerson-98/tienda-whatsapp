@@ -6,6 +6,8 @@ import { Gem, Lightbulb, Users, Target, Eye, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fadeUp, staggerContainer } from "@/lib/animations";
 import { useHeroImage } from "@/lib/siteSettings";
+import { useGlassGlow } from "@/lib/useGlassGlow";
+import { LightRays } from "@/components/layout/LightRays";
 
 const VALUES = [
   {
@@ -37,22 +39,22 @@ const TIMELINE = [
 
 export const AboutPage = () => {
   const reduce = useReducedMotion();
+  const handleGlow = useGlassGlow();
   const heroImage = useHeroImage("heroAboutImage", "/images/hero/about-hero.jpg");
 
   return (
     <main className="-mt-20">
       {/* HERO */}
-      <div className="relative min-h-[40vh] flex items-center bg-primary text-primary-foreground overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-25"
-          style={{ backgroundImage: `url('${heroImage}')` }}
-        />
-        <div className="absolute inset-0 bg-primary/90" />
-        <div className="container relative z-10 mx-auto text-center pt-40 pb-20">
+      <div
+        className="relative min-h-[45vh] bg-cover bg-center flex items-center justify-center text-center"
+        style={{ backgroundImage: `url('${heroImage}')` }}
+      >
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="relative z-10 text-white container pt-16">
           <h1 className="font-display font-black text-5xl md:text-6xl tracking-tighter">
             Somos VentPro
           </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl font-light opacity-90">
+          <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl font-light text-white/85">
             Más que ventanas: creamos espacios llenos de luz, confort y seguridad.
           </p>
         </div>
@@ -100,11 +102,8 @@ export const AboutPage = () => {
       <section className="bg-muted/50 py-20 border-y border-border">
         <div className="container mx-auto">
           <div className="text-center mb-16 max-w-2xl mx-auto">
-            <span className="text-xs font-semibold uppercase tracking-widest text-secondary">
-              Nuestra historia
-            </span>
-            <h2 className="mt-3 font-display font-black text-4xl md:text-5xl tracking-tighter">
-              Un recorrido de <span className="text-gradient">15 años</span>
+            <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
+              Un recorrido de <span className="text-secondary">15 años</span>
             </h2>
           </div>
 
@@ -149,40 +148,68 @@ export const AboutPage = () => {
       </section>
 
       {/* PILARES */}
-      <section className="container mx-auto py-20">
-        <div className="text-center mb-16">
-          <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter">
-            Nuestros <span className="text-gradient">pilares</span>
-          </h2>
-        </div>
-        <motion.div
-          variants={reduce ? undefined : staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      <section className="bg-primary py-20 md:py-28 relative overflow-hidden">
+        {/* Patrón decorativo de fondo */}
+        <svg
+          aria-hidden
+          className="absolute inset-0 w-full h-full opacity-[0.04] pointer-events-none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          {VALUES.map(({ icon: Icon, title, description }) => (
-            <motion.div
-              key={title}
-              variants={reduce ? undefined : fadeUp}
-              className="bg-card rounded-2xl p-8 border border-border text-center"
-            >
-              <div className="inline-flex bg-primary/10 rounded-xl p-4 text-primary mb-4">
-                <Icon className="h-7 w-7" />
-              </div>
-              <h3 className="font-display font-bold text-xl mb-3">{title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {description}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
+          <defs>
+            <pattern id="grid-pilares" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <circle cx="20" cy="20" r="1" fill="white" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid-pilares)" />
+        </svg>
+
+        {/* Rayos de luz solar atravesando vidrio */}
+        <LightRays />
+
+        <div className="container mx-auto relative z-10">
+          {/* Cabecera asimétrica */}
+          <div className="mb-14 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 md:gap-12 md:items-end">
+            <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter text-white">
+              Nuestros pilares
+            </h2>
+            <p className="text-white/60 font-light text-lg md:text-right">
+              Tres principios que guían cada proyecto, desde la primera visita
+              hasta el último ajuste en obra.
+            </p>
+          </div>
+
+          <motion.div
+            variants={reduce ? undefined : staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            {VALUES.map(({ icon: Icon, title, description }) => (
+              <motion.div
+                key={title}
+                variants={reduce ? undefined : fadeUp}
+                onMouseMove={handleGlow}
+                className="glass-glow glass-sheen relative bg-white/[0.06] border border-white/10 rounded-2xl p-8 backdrop-blur-sm hover:bg-white/10 transition-colors duration-300"
+              >
+                <div className="relative z-10 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20 text-secondary mb-5">
+                  <Icon className="h-6 w-6" aria-hidden />
+                </div>
+                <h3 className="relative z-10 font-display font-bold text-xl text-white mb-3">
+                  {title}
+                </h3>
+                <p className="relative z-10 text-white/60 text-sm leading-relaxed">
+                  {description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </section>
 
       {/* CTA */}
-      <section className="container mx-auto pb-20">
-        <div className="bg-primary text-primary-foreground rounded-3xl p-12 text-center">
+      <section className="container mx-auto py-20">
+        <div className="bg-primary text-primary-foreground rounded-2xl p-12 text-center">
           <h2 className="font-display font-black text-3xl md:text-4xl tracking-tighter mb-4">
             ¿Listo para transformar tu espacio?
           </h2>
