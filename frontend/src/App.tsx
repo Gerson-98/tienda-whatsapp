@@ -1,6 +1,7 @@
 // src/App.tsx
 
 import { Routes, Route, Navigate } from "react-router-dom";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { HomePage } from "@/pages/HomePage";
 import { ProjectsPage } from "@/pages/ProjectsPage";
@@ -15,32 +16,35 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 function App() {
   return (
-    <Routes>
-      {/* Rutas Públicas */}
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="proyectos" element={<ProjectsPage />} />
-        <Route path="productos" element={<ProductsPage />} />
-        <Route path="nosotros" element={<AboutPage />} />
-        <Route path="contacto" element={<ContactPage />} />
-        <Route path="cotizacion" element={<QuotePage />} />
-      </Route>
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Rutas Públicas */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="proyectos" element={<ProjectsPage />} />
+          <Route path="productos" element={<ProductsPage />} />
+          <Route path="nosotros" element={<AboutPage />} />
+          <Route path="contacto" element={<ContactPage />} />
+          <Route path="cotizacion" element={<QuotePage />} />
+        </Route>
 
-      {/* Rutas de Administrador */}
-      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-      <Route path="/admin/login" element={<LoginPage />} />
-      <Route
-        path="/admin/dashboard"
-        element={
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
+        {/* Rutas de Administrador */}
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/admin/login" element={<LoginPage />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* 404 */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        {/* 404 */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }
 
