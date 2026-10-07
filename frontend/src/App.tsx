@@ -14,14 +14,15 @@ import { AdminDashboard } from "@/pages/AdminDashboard";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import { useLenis } from "@/hooks/useLenis";
 
-/** Envuelve cada página pública en un ErrorBoundary aislado.
- *  Un error en /proyectos no mata el resto de la app. */
 const Page = ({ children }: { children: React.ReactNode }) => (
   <ErrorBoundary>{children}</ErrorBoundary>
 );
 
 function App() {
+  useLenis();
+
   return (
     <>
       <ScrollToTop />

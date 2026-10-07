@@ -10,8 +10,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TiltCard } from "@/components/ui/TiltCard";
 import { staggerContainer, fadeUp, viewportOnce } from "@/lib/animations";
-import { useGlassGlow } from "@/lib/useGlassGlow";
 
 const services = [
   {
@@ -54,18 +54,15 @@ const services = [
 
 export const ServicesSection = () => {
   const reduce = useReducedMotion();
-  const handleGlow = useGlassGlow();
-
   const windowServices = services.slice(0, 4);
   const performanceServices = services.slice(4);
 
   const renderCard = ({ icon: Icon, title, description }: (typeof services)[number]) => (
-    <motion.div
-      key={title}
-      variants={reduce ? undefined : fadeUp}
-      onMouseMove={handleGlow}
-      className="group glass-glow glass-sheen relative bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden"
-    >
+    <motion.div key={title} variants={reduce ? undefined : fadeUp}>
+      <TiltCard
+        maxTilt={8}
+        className="group glass-glow glass-sheen relative bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full"
+      >
       {/* Ícono */}
       <div className="relative z-10 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
         <Icon className="h-7 w-7" aria-hidden />
@@ -81,6 +78,7 @@ export const ServicesSection = () => {
 
       {/* Línea de acento inferior — se expande en hover */}
       <div className="relative z-10 mt-5 h-0.5 bg-secondary rounded-full w-12 group-hover:w-full transition-all duration-500" />
+      </TiltCard>
     </motion.div>
   );
 

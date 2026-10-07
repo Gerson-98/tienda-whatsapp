@@ -2,32 +2,44 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { SplitText } from "@/components/ui/SplitText";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import { LightRays } from "@/components/layout/LightRays";
 import { useHeroImage } from "@/lib/siteSettings";
 
-const makeSlide = (xOffset: number, delay = 0): Variants => ({
-  hidden: { opacity: 0, y: 16, x: xOffset },
+const makeSlide = (delay = 0): Variants => ({
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    x: 0,
-    transition: { duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94], delay },
+    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94], delay },
   },
 });
 
-const containerVariants: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
 export const HeroCarousel = () => {
   const reduce = useReducedMotion();
-  const fadeLeft = makeSlide(reduce ? 0 : -24);
   const heroImage = useHeroImage(
     "heroHomeImage",
     "/images/hero/interior-minimalista.jpg"
   );
+
+  // Parallax — imagen se mueve al 35% de la velocidad del scroll
+  const { scrollY } = useScroll();
+  const imgParallaxY = useTransform(
+    scrollY,
+    [0, 700],
+    reduce ? ["0%", "0%"] : ["0%", "-18%"]
+  );
+
+  const badgeVariant = makeSlide(0.1);
+  const descVariant = makeSlide(0.72);
+  const ctaVariant = makeSlide(0.88);
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-primary flex items-center">
@@ -45,21 +57,22 @@ export const HeroCarousel = () => {
         <rect width="100%" height="100%" fill="url(#diag)" />
       </svg>
 
-      {/* Rayos de luz solar atravesando vidrio */}
+      {/* Rayos de luz solar */}
       <LightRays />
 
-      {/* Gradiente para legibilidad del texto en mobile y desktop */}
+      {/* Gradiente legibilidad */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/10 z-10 pointer-events-none" />
 
-      {/* Imagen lado derecho con clip-path diagonal — efecto "vista a través de ventana" */}
+      {/* Imagen con clip-path diagonal + parallax */}
       <div
-        className="glass-sheen absolute inset-y-0 right-0 w-full md:w-[58%] z-0"
+        className="absolute inset-y-0 right-0 w-full md:w-[58%] z-0 overflow-hidden"
         style={{ clipPath: "polygon(12% 0, 100% 0, 100% 100%, 0% 100%)" }}
       >
-        <img
+        <motion.img
           src={heroImage}
           alt="Interior con ventanas VentPro"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover scale-110"
+          style={{ y: imgParallaxY }}
           fetchPriority="high"
           loading="eager"
           decoding="async"
@@ -71,7 +84,7 @@ export const HeroCarousel = () => {
           }}
         />
         <div className="absolute inset-0 bg-primary/35" />
-        {/* Marco de ventana — divisiones tipo cristal */}
+        {/* Marco de ventana */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-y-0 left-1/2 w-px bg-white/20" />
           <div className="absolute inset-x-0 top-1/2 h-px bg-white/20" />
@@ -81,14 +94,14 @@ export const HeroCarousel = () => {
 
       {/* Contenido de texto */}
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-24 md:pb-20 md:min-h-screen md:flex md:items-center">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="max-w-xl"
-        >
-          {/* Badge de marca */}
-          <motion.div variants={fadeLeft}>
+        <div className="max-w-xl">
+
+          {/* Badge */}
+          <motion.div
+            variants={badgeVariant}
+            initial="hidden"
+            animate="visible"
+          >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6">
               <span className="text-secondary text-sm font-semibold uppercase tracking-widest">
                 Fabricación propia desde 2010
@@ -96,26 +109,33 @@ export const HeroCarousel = () => {
             </div>
           </motion.div>
 
-          {/* Título — responsive en tamaño */}
-          <motion.h1
-            variants={fadeLeft}
-            className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-none tracking-tighter text-white"
-          >
-            Diseño y eficiencia en{" "}
-            <span className="text-secondary">ventanas premium</span>
-          </motion.h1>
+          {/* Título con SplitText word-reveal */}
+          <h1 className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-none tracking-tighter text-white">
+            <SplitText delay={0.22} stagger={0.06} duration={0.58}>
+              Diseño y eficiencia en
+            </SplitText>
+            <span className="block text-secondary">
+              <SplitText delay={0.52} stagger={0.07} duration={0.6}>
+                ventanas premium
+              </SplitText>
+            </span>
+          </h1>
 
           <motion.p
-            variants={fadeLeft}
+            variants={descVariant}
+            initial="hidden"
+            animate="visible"
             className="mt-6 text-base md:text-lg text-white/75 font-light leading-relaxed max-w-md"
           >
             Transformamos tu espacio con soluciones modernas, duraderas y de
             alto aislamiento térmico y acústico.
           </motion.p>
 
-          {/* CTAs — verticales en mobile, horizontales en sm+ */}
+          {/* CTAs */}
           <motion.div
-            variants={fadeLeft}
+            variants={ctaVariant}
+            initial="hidden"
+            animate="visible"
             className="mt-8 flex flex-col sm:flex-row gap-3"
           >
             <Button
@@ -138,7 +158,7 @@ export const HeroCarousel = () => {
               </Link>
             </Button>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Indicador de scroll */}
