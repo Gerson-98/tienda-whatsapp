@@ -6,13 +6,20 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { HomePage } from "@/pages/HomePage";
 import { ProjectsPage } from "@/pages/ProjectsPage";
 import { ProductsPage } from "@/pages/ProductsPage";
-import { AboutPage } from "@/pages/AboutPage"; // <-- 1. Importa la nueva página
+import { AboutPage } from "@/pages/AboutPage";
 import { QuotePage } from "@/pages/QuotePage";
-import { ContactPage } from "@/pages/ContactPage"; // <-- 1. Importa la nueva página
+import { ContactPage } from "@/pages/ContactPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { AdminDashboard } from "@/pages/AdminDashboard";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+
+/** Envuelve cada página pública en un ErrorBoundary aislado.
+ *  Un error en /proyectos no mata el resto de la app. */
+const Page = ({ children }: { children: React.ReactNode }) => (
+  <ErrorBoundary>{children}</ErrorBoundary>
+);
 
 function App() {
   return (
@@ -21,12 +28,12 @@ function App() {
       <Routes>
         {/* Rutas Públicas */}
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="proyectos" element={<ProjectsPage />} />
-          <Route path="productos" element={<ProductsPage />} />
-          <Route path="nosotros" element={<AboutPage />} />
-          <Route path="contacto" element={<ContactPage />} />
-          <Route path="cotizacion" element={<QuotePage />} />
+          <Route index element={<Page><HomePage /></Page>} />
+          <Route path="proyectos" element={<Page><ProjectsPage /></Page>} />
+          <Route path="productos" element={<Page><ProductsPage /></Page>} />
+          <Route path="nosotros" element={<Page><AboutPage /></Page>} />
+          <Route path="contacto" element={<Page><ContactPage /></Page>} />
+          <Route path="cotizacion" element={<Page><QuotePage /></Page>} />
         </Route>
 
         {/* Rutas de Administrador */}
