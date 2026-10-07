@@ -10,7 +10,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { staggerContainer, fadeUp } from "@/lib/animations";
+import { staggerContainer, fadeUp, viewportOnce } from "@/lib/animations";
 import { useGlassGlow } from "@/lib/useGlassGlow";
 
 const services = [
@@ -64,7 +64,7 @@ export const ServicesSection = () => {
       key={title}
       variants={reduce ? undefined : fadeUp}
       onMouseMove={handleGlow}
-      className="group glass-glow glass-sheen relative bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+      className="group glass-glow glass-sheen relative bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden"
     >
       {/* Ícono */}
       <div className="relative z-10 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -102,7 +102,7 @@ export const ServicesSection = () => {
           variants={reduce ? undefined : staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={viewportOnce}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {windowServices.map(renderCard)}
@@ -112,7 +112,7 @@ export const ServicesSection = () => {
           variants={reduce ? undefined : staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={viewportOnce}
           className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto"
         >
           {performanceServices.map(renderCard)}

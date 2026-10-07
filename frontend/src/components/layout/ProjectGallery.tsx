@@ -69,7 +69,7 @@ export const ProjectGallery = () => {
             variants={reduce ? undefined : staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px 120px 0px" }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {projects.map((project) => (

@@ -9,7 +9,7 @@ import {
   useTransform,
   animate,
 } from "framer-motion";
-import { staggerContainer, fadeUp } from "@/lib/animations";
+import { staggerContainer, fadeUp, viewportOnce } from "@/lib/animations";
 import { useGlassGlow } from "@/lib/useGlassGlow";
 import { LightRays } from "@/components/layout/LightRays";
 
@@ -51,7 +51,7 @@ const AnimatedNumber = ({ to, prefix = "", suffix = "" }: { to: number; prefix?:
   useEffect(() => {
     if (!inView) return;
     if (reduce) { count.set(to); return; }
-    const controls = animate(count, to, { duration: 1.8, ease: "easeOut" });
+    const controls = animate(count, to, { duration: 1.2, ease: "easeOut" });
     return () => controls.stop();
   }, [inView, count, to, reduce]);
 
@@ -118,7 +118,7 @@ export const WhyVentPro = () => {
           variants={reduce ? undefined : staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={viewportOnce}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {DIFFERENTIATORS.map(({ icon: Icon, title, description }) => (

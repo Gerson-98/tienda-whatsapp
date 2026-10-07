@@ -131,7 +131,7 @@
   }
   @media (prefers-reduced-motion: no-preference) {
     .glass-sheen::after {
-      transition: left 0.85s ease;
+      transition: left 0.6s ease;
     }
     .glass-sheen:hover::after,
     .glass-sheen:focus-within::after {

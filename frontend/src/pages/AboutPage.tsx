@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Gem, Lightbulb, Users, Target, Eye, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { fadeUp, staggerContainer } from "@/lib/animations";
+import { fadeUp, staggerContainer, viewportOnce } from "@/lib/animations";
 import { useHeroImage } from "@/lib/siteSettings";
 import { useGlassGlow } from "@/lib/useGlassGlow";
 import { LightRays } from "@/components/layout/LightRays";
@@ -66,7 +66,7 @@ export const AboutPage = () => {
           variants={reduce ? undefined : staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={viewportOnce}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           <motion.div
@@ -113,7 +113,7 @@ export const AboutPage = () => {
               variants={reduce ? undefined : staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
+              viewport={viewportOnce}
               className="space-y-12"
             >
               {TIMELINE.map((t, i) => (
@@ -182,7 +182,7 @@ export const AboutPage = () => {
             variants={reduce ? undefined : staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={viewportOnce}
             className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
             {VALUES.map(({ icon: Icon, title, description }) => (

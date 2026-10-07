@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Star } from "lucide-react";
-import { fadeUp, staggerContainer } from "@/lib/animations";
+import { fadeUp, staggerContainer, viewportOnce } from "@/lib/animations";
 
 const testimonials = [
   {
@@ -47,7 +47,7 @@ export const Testimonials = () => {
           variants={reduce ? undefined : staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={viewportOnce}
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {testimonials.map((t) => (
