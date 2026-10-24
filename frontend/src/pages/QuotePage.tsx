@@ -16,7 +16,7 @@ import {
 } from "@/components/products/QuoteCartSummary";
 
 export const QuotePage = () => {
-  const heroImage = useHeroImage("heroQuoteImage", "/images/hero/quote-hero.jpg");
+  const heroImage = useHeroImage("heroQuoteImage", "/images/hero/quote-hero.webp");
   const [searchParams] = useSearchParams();
   const diseno = searchParams.get("diseno")?.slice(0, 300) ?? "";
   const items = useCartStore((s) => s.items);

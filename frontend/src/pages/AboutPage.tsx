@@ -40,7 +40,7 @@ const TIMELINE = [
 export const AboutPage = () => {
   const reduce = useReducedMotion();
   const handleGlow = useGlassGlow();
-  const heroImage = useHeroImage("heroAboutImage", "/images/hero/about-hero.jpg");
+  const heroImage = useHeroImage("heroAboutImage", "/images/hero/about-hero.webp");
 
   return (
     <main className="-mt-20">

@@ -25,7 +25,7 @@ import { useHeroImage } from "@/lib/siteSettings";
 import type { Product } from "@/types/product";
 
 export const ProductsPage = () => {
-  const heroImage = useHeroImage("heroProductsImage", "/images/hero/products-hero.jpg");
+  const heroImage = useHeroImage("heroProductsImage", "/images/hero/products-hero.webp");
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
