@@ -3,7 +3,8 @@
 import { ServicesSection } from "@/components/layout/ServicesSection";
 import { ContactForm } from "@/components/layout/ContactForm";
 import { Testimonials } from "@/components/layout/Testimonials";
-import { HeroCarousel } from "@/components/layout/HeroCarousel";
+import { HeroWindow } from "@/components/layout/HeroWindow";
+import { WindowConfigurator } from "@/components/layout/WindowConfigurator";
 import { ProjectGallery } from "@/components/layout/ProjectGallery";
 import { MotionSection } from "@/components/motion/FadeInSection";
 import { WhyVentPro } from "@/components/layout/WhyVentPro";
@@ -11,9 +12,11 @@ import { WhyVentPro } from "@/components/layout/WhyVentPro";
 export function HomePage() {
   return (
     <main className="-mt-20">
-      <HeroCarousel />
+      <HeroWindow />
 
-      {/* Sección diferenciadora — rompe el ritmo justo después del hero */}
+      {/* Diferenciador: el visitante dibuja su ventana y la manda a cotizar */}
+      <WindowConfigurator />
+
       <WhyVentPro />
 
       <MotionSection animateOnLoad={true}>

@@ -1,7 +1,7 @@
 // frontend/src/pages/QuotePage.tsx
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Loader2, CheckCircle, Send, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,8 @@ import {
 
 export const QuotePage = () => {
   const heroImage = useHeroImage("heroQuoteImage", "/images/hero/quote-hero.jpg");
+  const [searchParams] = useSearchParams();
+  const diseno = searchParams.get("diseno")?.slice(0, 300) ?? "";
   const items = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
 
@@ -25,7 +27,7 @@ export const QuotePage = () => {
     email: "",
     phone: "",
     projectType: "",
-    message: "",
+    message: diseno ? `Quiero cotizar esta ventana que diseñé en el sitio: ${diseno}` : "",
   });
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"

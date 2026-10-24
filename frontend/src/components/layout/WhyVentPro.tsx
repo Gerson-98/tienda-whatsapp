@@ -1,17 +1,8 @@
-// Sección diferenciadora — rompe el ritmo visual, contrasta con el fondo claro
+// Diferenciadores: composición editorial (título fijo a la izquierda, promesas como filas a la derecha).
 import { useRef, useEffect } from "react";
-import { ShieldCheck, Zap, HeartHandshake } from "lucide-react";
-import {
-  motion,
-  useReducedMotion,
-  useInView,
-  useMotionValue,
-  useTransform,
-  animate,
-} from "framer-motion";
-import { staggerContainer, fadeUp, viewportOnce } from "@/lib/animations";
-import { TiltCard } from "@/components/ui/TiltCard";
-import { LightRays } from "@/components/layout/LightRays";
+import { ShieldCheck, Zap, HeartHandshake, ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { viewportOnce } from "@/lib/animations";
 
 const DIFFERENTIATORS = [
   {
@@ -35,10 +26,10 @@ const DIFFERENTIATORS = [
 ];
 
 const STATS = [
-  { value: 200, prefix: "+", label: "Proyectos completados" },
-  { value: 15, suffix: "+", label: "Años de experiencia" },
-  { value: 100, suffix: "%", label: "Satisfacción garantizada" },
-  { value: 18, label: "Departamentos atendidos" },
+  { value: 200, prefix: "+", label: "proyectos completados" },
+  { value: 15, suffix: "+", label: "años de experiencia" },
+  { value: 100, suffix: "%", label: "satisfacción garantizada" },
+  { value: 18, label: "departamentos atendidos" },
 ];
 
 const AnimatedNumber = ({ to, prefix = "", suffix = "" }: { to: number; prefix?: string; suffix?: string }) => {
@@ -51,7 +42,7 @@ const AnimatedNumber = ({ to, prefix = "", suffix = "" }: { to: number; prefix?:
   useEffect(() => {
     if (!inView) return;
     if (reduce) { count.set(to); return; }
-    const controls = animate(count, to, { duration: 1.2, ease: "easeOut" });
+    const controls = animate(count, to, { duration: 1.4, ease: "easeOut" });
     return () => controls.stop();
   }, [inView, count, to, reduce]);
 
@@ -68,77 +59,56 @@ export const WhyVentPro = () => {
   const reduce = useReducedMotion();
 
   return (
-    <section className="bg-primary py-20 md:py-28 relative overflow-hidden">
-      {/* Patrón decorativo de fondo */}
-      <svg
-        aria-hidden
-        className="absolute inset-0 w-full h-full opacity-[0.04] pointer-events-none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <pattern id="grid-why" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-            <circle cx="20" cy="20" r="1" fill="white" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid-why)" />
-      </svg>
-
-      {/* Rayos de luz solar atravesando vidrio */}
-      <LightRays />
-
-      <div className="container mx-auto relative z-10">
-        {/* Cabecera asimétrica */}
-        <div className="mb-10 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 md:gap-12 md:items-end">
-          <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter text-white">
-            Lo que nos hace diferentes
+    <section className="relative overflow-hidden bg-background py-24 md:py-32">
+      <div className="container mx-auto grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
+        {/* Columna fija: título y cifras */}
+        <div className="self-start lg:sticky lg:top-28">
+          <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tighter text-balance md:text-6xl">
+            Lo que nos hace <span className="text-primary">diferentes</span>
           </h2>
-          <p className="text-white/60 font-light text-lg md:text-right">
-            No somos otro proveedor de ventanas. Somos el equipo que hace que tu inversión,
-            en casa o en obra, valga.
+          <p className="mt-5 max-w-sm text-lg font-light text-muted-foreground">
+            No somos otro proveedor de ventanas. Somos el equipo que hace que tu inversión, en casa o en obra, valga.
           </p>
+          <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8">
+            {STATS.map((s) => (
+              <div key={s.label}>
+                <dt className="sr-only">{s.label}</dt>
+                <dd>
+                  <span className="font-display text-5xl font-black tracking-tighter text-primary md:text-6xl">
+                    <AnimatedNumber to={s.value} prefix={s.prefix} suffix={s.suffix} />
+                  </span>
+                  <span className="mt-1 block text-sm text-muted-foreground">{s.label}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        {/* Cifras que respaldan la promesa */}
-        <div className="mb-14 flex flex-wrap gap-x-10 gap-y-6 pb-10 border-b border-white/10">
-          {STATS.map((stat) => (
-            <div key={stat.label} className="flex items-baseline gap-2.5">
-              <span className="font-display font-black text-3xl md:text-4xl text-white tracking-tighter">
-                <AnimatedNumber to={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
-              </span>
-              <span className="text-sm text-white/55 leading-tight max-w-[8rem]">
-                {stat.label}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Cards */}
-        <motion.div
-          variants={reduce ? undefined : staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {DIFFERENTIATORS.map(({ icon: Icon, title, description }) => (
-            <motion.div key={title} variants={reduce ? undefined : fadeUp}>
-              <TiltCard
-                maxTilt={7}
-                className="glass-glow glass-sheen relative bg-white/[0.06] border border-white/10 rounded-2xl p-8 backdrop-blur-sm hover:bg-white/10 transition-colors duration-300 h-full"
-              >
-                <div className="relative z-10 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20 text-secondary mb-5">
-                  <Icon className="h-6 w-6" aria-hidden />
+        {/* Promesas como filas */}
+        <ul className="border-t border-border">
+          {DIFFERENTIATORS.map(({ icon: Icon, title, description }, i) => (
+            <motion.li
+              key={title}
+              initial={reduce ? false : { opacity: 0, y: 36 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={viewportOnce}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
+              className="group relative border-b border-border"
+            >
+              <div className="relative grid grid-cols-[auto_1fr_auto] items-start gap-5 py-9 md:gap-8 md:py-12">
+                <span className="mt-1 inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-primary transition-colors duration-300 group-hover:bg-secondary group-hover:text-secondary-foreground md:h-16 md:w-16">
+                  <Icon className="h-6 w-6 md:h-7 md:w-7" aria-hidden />
+                </span>
+                <div>
+                  <h3 className="font-display text-2xl font-extrabold tracking-tight md:text-3xl">{title}</h3>
+                  <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">{description}</p>
                 </div>
-                <h3 className="relative z-10 font-display font-bold text-xl text-white mb-3 line-clamp-2">
-                  {title}
-                </h3>
-                <p className="relative z-10 text-white/60 text-sm leading-relaxed">
-                  {description}
-                </p>
-              </TiltCard>
-            </motion.div>
+                <ArrowUpRight className="mt-2 hidden h-6 w-6 text-border transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-secondary md:block" aria-hidden />
+              </div>
+              <span className="absolute bottom-[-1px] left-0 h-[2px] w-0 bg-secondary transition-[width] duration-700 ease-out group-hover:w-full" aria-hidden />
+            </motion.li>
           ))}
-        </motion.div>
+        </ul>
       </div>
     </section>
   );
