@@ -11,7 +11,7 @@ import { useHeroImage } from "@/lib/siteSettings";
 import { logger } from "@/lib/logger";
 
 export const ContactPage = () => {
-  const heroImage = useHeroImage("heroContactImage", "/images/hero/contact-hero.jpg");
+  const heroImage = useHeroImage("heroContactImage", "/images/hero/contact-hero.webp");
   const [formData, setFormData] = useState({
     name: "",
     email: "",

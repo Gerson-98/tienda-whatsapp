@@ -25,7 +25,7 @@ import { useHeroImage } from "@/lib/siteSettings";
 import type { Product } from "@/types/product";
 
 export const ProductsPage = () => {
-  const heroImage = useHeroImage("heroProductsImage", "/images/hero/products-hero.jpg");
+  const heroImage = useHeroImage("heroProductsImage", "/images/hero/products-hero.webp");
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
@@ -119,7 +119,7 @@ export const ProductsPage = () => {
             Nuestro <span className="text-secondary">catálogo</span>
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-white/85 text-lg font-light">
-            Soluciones premium en ventanas, puertas y sistemas de PVC y aluminio.
+            Soluciones premium en ventanas, puertas y sistemas de PVC.
           </p>
         </div>
       </div>

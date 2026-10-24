@@ -17,7 +17,7 @@ import { useHeroImage } from "@/lib/siteSettings";
 import type { Project } from "@/types/project";
 
 export const ProjectsPage = () => {
-  const heroImage = useHeroImage("heroProjectsImage", "/images/hero/projects-hero.jpg");
+  const heroImage = useHeroImage("heroProjectsImage", "/images/hero/projects-hero.webp");
   const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategories, setActiveCategories] = useState<string[]>([]);

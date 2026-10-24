@@ -49,7 +49,7 @@ export const Footer = () => {
               Vent<span className="text-secondary">Pro</span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-slate-400 max-w-xs">
-              Fabricación e instalación de ventanas de aluminio y PVC de alta calidad
+              Fabricación e instalación de ventanas y puertas de PVC de alta calidad
               en Guatemala. Más de 200 proyectos entregados.
             </p>
             <div className="mt-6 flex justify-center md:justify-start gap-3">
@@ -87,10 +87,10 @@ export const Footer = () => {
             </h3>
             <ul className="space-y-0.5 text-sm text-slate-400">
               {[
-                "Ventanas de aluminio",
                 "Ventanas de PVC",
-                "Puertas corredizas",
-                "Fachadas y muros cortina",
+                "Puertas de PVC",
+                "Ventanas corredizas",
+                "Ventanas oscilobatientes",
                 "Instalación profesional",
               ].map((s) => (
                 <li key={s} className="py-1.5">{s}</li>

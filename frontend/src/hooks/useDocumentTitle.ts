@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const BASE_TITLE = "VentPro — Ventanas de Aluminio y PVC en Guatemala";
+const BASE_TITLE = "VentPro — Ventanas y Puertas de PVC en Guatemala";
 const SUFFIX = "VentPro";
 
 interface UseDocumentTitleOptions {
