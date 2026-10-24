@@ -2,14 +2,12 @@
 // Todo en px a partir del ancho medido, así los perfiles guardan la proporción real al cambiar medidas.
 import { useEffect, useRef, useState } from "react";
 
-export type WinType = "corrediza" | "fija" | "abatible" | "oscilobatiente" | "puerta";
-export type Material = "aluminio" | "pvc";
+export type WinType = "corrediza" | "fija" | "oscilobatiente" | "puerta";
+export type Material = "pvc";
 
 export const PROFILE_COLORS = {
-  blanco: { label: "Blanco", hex: "#F2F4F5", dark: "#C9D0D4" },
-  grafito: { label: "Negro grafito", hex: "#272C31", dark: "#14171A" },
-  bronce: { label: "Bronce", hex: "#6C5140", dark: "#4B372B" },
-  plata: { label: "Plata anodizado", hex: "#B8BFC5", dark: "#8E979E" },
+  blanco: { label: "Blanco", hex: "#F6F7F8", dark: "#D3D9DD" },
+  cafe: { label: "Café", hex: "#7A5237", dark: "#55371F" },
 } as const;
 export type ProfileColor = keyof typeof PROFILE_COLORS;
 
@@ -85,14 +83,14 @@ export const WindowDrawing = ({
   type,
   w,
   h,
-  material = "aluminio",
+  material = "pvc",
   color = "blanco",
   glass = "claro",
   className = "",
 }: Props) => {
   const [ref, W] = useWidth();
   const c = PROFILE_COLORS[color];
-  const fw = Math.max(7, W * (material === "pvc" ? 0.07 : 0.048)); // marco
+  const fw = Math.max(7, W * (material === "pvc" ? 0.07 : 0.07)); // marco
   const sw = Math.max(5, fw * 0.62); // hoja
   const frosted = glass === "esmerilado";
   const ratio = type === "puerta" ? Math.min(w / h, 0.62) : w / h;
@@ -137,7 +135,7 @@ export const WindowDrawing = ({
             </>
           )}
 
-          {(type === "abatible" || type === "oscilobatiente") && (
+          {(type === "oscilobatiente") && (
             <div className="absolute inset-0" style={sashStyle}>
               <div className="relative h-full w-full overflow-hidden">
                 <Pane glass={glass} frosted={frosted} />

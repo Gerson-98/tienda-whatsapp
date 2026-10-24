@@ -119,7 +119,7 @@ export const ProductsPage = () => {
             Nuestro <span className="text-secondary">catálogo</span>
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-white/85 text-lg font-light">
-            Soluciones premium en ventanas, puertas y sistemas de PVC y aluminio.
+            Soluciones premium en ventanas, puertas y sistemas de PVC.
           </p>
         </div>
       </div>

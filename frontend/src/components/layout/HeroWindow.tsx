@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { animate, motion, useMotionValue, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { LightRays } from "@/components/layout/LightRays";
 import { useHeroImage } from "@/lib/siteSettings";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -33,16 +32,16 @@ const Sash = ({ side, x }: { side: "left" | "right"; x: ReturnType<typeof useTra
     style={{ x }}
     className={`absolute inset-y-0 ${side === "left" ? "left-0" : "right-0"} w-1/2 will-change-transform`}
   >
-    {/* perfil de aluminio */}
-    <div className="absolute inset-0 bg-gradient-to-br from-[#e9eef1] via-[#b9c3ca] to-[#8e9aa3] p-[7px] sm:p-[9px]">
+    {/* perfil de PVC blanco */}
+    <div className="absolute inset-0 bg-gradient-to-br from-white via-[#eef1f3] to-[#cfd6da] p-[8px] sm:p-[10px]">
       {/* vidrio */}
-      <div className="relative h-full w-full overflow-hidden bg-primary/15 backdrop-blur-[1.5px]">
+      <div className="relative h-full w-full overflow-hidden bg-primary/15">
         <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,.28)_0%,rgba(255,255,255,.04)_38%,rgba(255,255,255,.16)_62%,rgba(255,255,255,0)_100%)]" />
         <div className="win-glass absolute inset-0" />
       </div>
     </div>
     <span
-      className={`absolute top-1/2 h-14 w-[5px] -translate-y-1/2 rounded-full bg-[#5d6a73] ${side === "left" ? "right-[3px]" : "left-[3px]"}`}
+      className={`absolute top-1/2 h-14 w-[5px] -translate-y-1/2 rounded-full bg-[#aab3b9] ${side === "left" ? "right-[3px]" : "left-[3px]"}`}
     />
   </motion.div>
 );
@@ -84,10 +83,9 @@ export const HeroWindow = () => {
 
   return (
     <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-primary">
-      <LightRays />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_75%_40%,hsl(var(--secondary)/0.14),transparent_70%)]" />
 
-      <div className="container relative z-10 mx-auto grid items-center gap-10 px-4 pb-16 pt-40 sm:px-6 md:pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8 lg:pt-28">
+      <div className="container relative z-10 mx-auto grid items-center gap-10 px-4 pb-16 pt-40 sm:px-6 md:pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8 lg:pb-14 lg:pt-48">
         {/* Texto */}
         <div>
           <h1 className="font-display text-5xl font-black leading-[0.98] tracking-tighter text-white text-balance sm:text-6xl lg:text-7xl xl:text-[5.4rem]">
@@ -119,7 +117,7 @@ export const HeroWindow = () => {
             transition={{ duration: 0.7, ease: EASE, delay: 0.7 }}
             className="mt-7 max-w-md text-base font-light leading-relaxed text-white/75 md:text-lg"
           >
-            Fabricamos ventanas y puertas de aluminio y PVC en Guatemala desde 2010: aislamiento térmico y acústico, hechas a tu medida.
+            Fabricamos ventanas y puertas de PVC en Guatemala desde 2010: aislamiento térmico y acústico, hechas a tu medida.
           </motion.p>
 
           <motion.div
@@ -146,7 +144,7 @@ export const HeroWindow = () => {
           initial={reduce ? false : { opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: EASE, delay: 0.2 }}
-          className="mx-auto w-full max-w-[430px] lg:ml-auto"
+          className="mx-auto w-full max-w-[430px] lg:ml-auto lg:w-fit lg:max-w-none"
         >
           <div
             ref={frameRef}
@@ -154,7 +152,7 @@ export const HeroWindow = () => {
             onPointerDown={(e) => { dragging.current = true; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); setSun(e); }}
             onPointerUp={() => { dragging.current = false; }}
             onPointerCancel={() => { dragging.current = false; }}
-            className="relative aspect-[4/4.1] w-full cursor-grab touch-pan-y select-none rounded-[3px] bg-gradient-to-br from-[#eef2f4] via-[#aeb9c1] to-[#7d8a94] p-[11px] ring-1 ring-white/30 active:cursor-grabbing sm:p-[14px]"
+            className="relative aspect-[4/4.1] w-full lg:h-[min(calc(100svh-16rem),500px)] lg:w-auto cursor-grab touch-pan-y select-none rounded-[3px] bg-gradient-to-br from-white via-[#eef1f3] to-[#cdd4d8] p-[11px] ring-1 ring-white/30 active:cursor-grabbing sm:p-[14px]"
             style={{ ["--gx" as string]: "70%", ["--gy" as string]: "30%" }}
           >
             <div className="relative h-full w-full overflow-hidden bg-primary">

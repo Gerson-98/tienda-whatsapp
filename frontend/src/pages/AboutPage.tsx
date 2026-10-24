@@ -91,7 +91,7 @@ export const AboutPage = () => {
             </div>
             <h2 className="font-display font-bold text-xl mb-3">Visión</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Convertirnos en la marca líder en soluciones de aluminio y PVC de
+              Convertirnos en la marca líder en soluciones en PVC de
               Centroamérica, sinónimo de calidad y diseño.
             </p>
           </motion.div>

@@ -23,7 +23,7 @@ const Visual = ({ s }: { s: Service }) => {
     const door = s.draw === "puerta";
     return (
       <div className={cn("mx-auto", door ? "w-[34%] max-w-[170px]" : "w-[78%] max-w-[360px]")}>
-        <WindowDrawing type={s.draw} w={door ? 90 : 150} h={door ? 210 : 120} material={door ? "pvc" : "aluminio"} color={door ? "grafito" : "blanco"} glass="claro" />
+        <WindowDrawing type={s.draw} w={door ? 90 : 150} h={door ? 210 : 120} material="pvc" color={door ? "cafe" : "blanco"} glass="claro" />
       </div>
     );
   }
@@ -55,7 +55,7 @@ export const ServicesSection = () => {
       <div className="container mx-auto">
         <div className="mb-12 grid gap-5 md:grid-cols-[1.1fr_1fr] md:items-end">
           <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tighter text-balance md:text-6xl">
-            Soluciones en PVC y aluminio para cada espacio
+            Soluciones en PVC para cada espacio
           </h2>
           <p className="text-lg font-light text-muted-foreground md:text-right">
             Confort, seguridad y estética — en tu hogar o en tu próximo proyecto.

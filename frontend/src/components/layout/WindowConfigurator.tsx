@@ -8,25 +8,18 @@ import {
   PROFILE_COLORS,
   GLASSES,
   type WinType,
-  type Material,
   type ProfileColor,
   type GlassKind,
 } from "@/components/layout/WindowDrawing";
-import { LightRays } from "@/components/layout/LightRays";
 import { cn } from "@/lib/utils";
 
 const TYPES: { id: WinType; label: string; note: string }[] = [
   { id: "corrediza", label: "Corrediza", note: "Se desliza y ahorra espacio" },
   { id: "fija", label: "Fija", note: "Máxima luz y aislamiento" },
-  { id: "abatible", label: "Abatible", note: "Abre hacia adentro" },
   { id: "oscilobatiente", label: "Oscilobatiente", note: "Abre y se inclina para ventilar" },
   { id: "puerta", label: "Puerta", note: "Terrazas, balcones y entradas" },
 ];
 
-const MATERIALS: { id: Material; label: string }[] = [
-  { id: "aluminio", label: "Aluminio" },
-  { id: "pvc", label: "PVC" },
-];
 
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
@@ -40,8 +33,7 @@ const Group = ({ label, children }: { label: string; children: React.ReactNode }
 export const WindowConfigurator = () => {
   const reduce = useReducedMotion();
   const [type, setType] = useState<WinType>("corrediza");
-  const [material, setMaterial] = useState<Material>("aluminio");
-  const [color, setColor] = useState<ProfileColor>("grafito");
+  const [color, setColor] = useState<ProfileColor>("blanco");
   const [glass, setGlass] = useState<GlassKind>("claro");
   const [w, setW] = useState(180);
   const [h, setH] = useState(120);
@@ -54,8 +46,8 @@ export const WindowConfigurator = () => {
 
   const summary = useMemo(() => {
     const t = TYPES.find((x) => x.id === type)!.label.toLowerCase();
-    return `${isDoor ? "Puerta" : "Ventana " + t} de ${material === "pvc" ? "PVC" : "aluminio"}, ${width} × ${height} cm, perfil ${PROFILE_COLORS[color].label.toLowerCase()}, vidrio ${GLASSES[glass].label.toLowerCase()}.`;
-  }, [type, material, color, glass, width, height, isDoor]);
+    return `${isDoor ? "Puerta" : "Ventana " + t} de PVC, ${width} × ${height} cm, perfil ${PROFILE_COLORS[color].label.toLowerCase()}, vidrio ${GLASSES[glass].label.toLowerCase()}.`;
+  }, [type, color, glass, width, height, isDoor]);
 
   const chip = (active: boolean) =>
     cn(
@@ -67,7 +59,6 @@ export const WindowConfigurator = () => {
 
   return (
     <section className="relative overflow-hidden bg-[hsl(215_35%_10%)] py-20 md:py-28 text-white" id="disena-tu-ventana">
-      <LightRays />
       <div className="container relative z-10 mx-auto">
         <div className="mb-12 max-w-2xl">
           <h2 className="font-display text-4xl font-black leading-none tracking-tighter text-balance md:text-6xl">
@@ -99,37 +90,26 @@ export const WindowConfigurator = () => {
               <p className="mt-3 text-sm text-white/50">{TYPES.find((t) => t.id === type)!.note}</p>
             </Group>
 
-            <div className="grid gap-7 sm:grid-cols-2">
-              <Group label="Material">
-                <div className="flex gap-2" role="radiogroup" aria-label="Material">
-                  {MATERIALS.map((m) => (
-                    <button key={m.id} type="button" role="radio" aria-checked={material === m.id} onClick={() => setMaterial(m.id)} className={cn(chip(material === m.id), "flex-1")}>
-                      {m.label}
-                    </button>
-                  ))}
-                </div>
-              </Group>
-
-              <Group label={`Perfil: ${PROFILE_COLORS[color].label}`}>
-                <div className="flex gap-3" role="radiogroup" aria-label="Color del perfil">
-                  {(Object.keys(PROFILE_COLORS) as ProfileColor[]).map((k) => (
-                    <button
-                      key={k}
-                      type="button"
-                      role="radio"
-                      aria-checked={color === k}
-                      aria-label={PROFILE_COLORS[k].label}
-                      onClick={() => setColor(k)}
-                      className={cn(
-                        "h-11 w-11 rounded-full border-2 transition-transform duration-200 hover:scale-105",
-                        color === k ? "border-secondary ring-2 ring-secondary/40 ring-offset-2 ring-offset-[hsl(215_35%_10%)]" : "border-white/25"
-                      )}
-                      style={{ background: `linear-gradient(145deg, ${PROFILE_COLORS[k].hex}, ${PROFILE_COLORS[k].dark})` }}
-                    />
-                  ))}
-                </div>
-              </Group>
-            </div>
+            <Group label={`Color del PVC: ${PROFILE_COLORS[color].label}`}>
+              <div className="flex gap-3" role="radiogroup" aria-label="Color del perfil de PVC">
+                {(Object.keys(PROFILE_COLORS) as ProfileColor[]).map((k) => (
+                  <button
+                    key={k}
+                    type="button"
+                    role="radio"
+                    aria-checked={color === k}
+                    onClick={() => setColor(k)}
+                    className={cn(
+                      "flex min-h-11 items-center gap-3 rounded-lg border px-4 text-sm font-medium transition-colors duration-200",
+                      color === k ? "border-secondary text-white" : "border-white/20 text-white/75 hover:border-white/50"
+                    )}
+                  >
+                    <span className="h-6 w-6 rounded-full border border-white/30" style={{ background: `linear-gradient(145deg, ${PROFILE_COLORS[k].hex}, ${PROFILE_COLORS[k].dark})` }} />
+                    {PROFILE_COLORS[k].label}
+                  </button>
+                ))}
+              </div>
+            </Group>
 
             <Group label="Vidrio">
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Tipo de vidrio">
@@ -170,7 +150,7 @@ export const WindowConfigurator = () => {
 
           {/* Vista previa */}
           <div className="lg:sticky lg:top-28">
-            <div className="relative rounded-2xl bg-gradient-to-br from-[#eef2f4] to-[#c3cfd6] p-6 text-foreground md:p-8">
+            <div className="relative rounded-2xl bg-gradient-to-br from-[#d6e2ea] to-[#a3b7c4] p-6 text-foreground md:p-8">
               <div className="relative flex h-[320px] items-center justify-center md:h-[430px]">
                 <motion.div
                   key={type}
@@ -183,7 +163,7 @@ export const WindowConfigurator = () => {
                     className="relative"
                     style={ratio >= 1.25 ? { width: "92%" } : { height: "100%", aspectRatio: String(ratio), maxWidth: "92%" }}
                   >
-                    <WindowDrawing type={type} w={width} h={height} material={material} color={color} glass={glass} />
+                    <WindowDrawing type={type} w={width} h={height} material="pvc" color={color} glass={glass} />
                     <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs tabular-nums text-slate-600">{width} cm</span>
                     <span className="absolute -left-7 top-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap text-xs tabular-nums text-slate-600">{height} cm</span>
                   </div>
