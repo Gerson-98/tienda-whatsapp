@@ -6,6 +6,7 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import { animate, motion, useMotionValue, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useHeroImage } from "@/lib/siteSettings";
+import { Magnetic } from "@/components/motion/Magnetic";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const OPEN_DEFAULT = 0.6;
@@ -126,11 +127,13 @@ export const HeroWindow = () => {
             transition={{ duration: 0.7, ease: EASE, delay: 0.85 }}
             className="mt-9 flex flex-col gap-3 sm:flex-row"
           >
-            <Button asChild size="lg" className="rounded-full bg-secondary px-8 text-base font-semibold text-secondary-foreground shadow-sm hover:bg-secondary/90">
-              <Link to="/cotizacion">
-                Solicitar cotización <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+            <Magnetic>
+              <Button asChild size="lg" className="rounded-full bg-secondary px-8 text-base font-semibold text-secondary-foreground shadow-sm hover:bg-secondary/90">
+                <Link to="/cotizacion">
+                  Solicitar cotización <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </Magnetic>
             <Button asChild size="lg" variant="ghost" className="rounded-full border-2 border-white/30 px-8 text-base text-white hover:border-white hover:bg-white/10 hover:text-white">
               <a href="#disena-tu-ventana">
                 Diseña tu ventana <ChevronRight className="ml-1 h-4 w-4" />

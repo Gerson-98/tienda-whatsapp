@@ -65,6 +65,24 @@
     font-feature-settings: "ss01", "cv11";
   }
 
+  /* Superficies del navegador con la paleta de la marca */
+  ::selection {
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.55) transparent;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.5);
+    border-radius: 9999px;
+    border: 2px solid hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.8); }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
   }
@@ -241,6 +259,18 @@
   }
   .cfg-range:active::-webkit-slider-thumb { transform: scale(1.12); }
   .cfg-range:focus-visible { outline: 2px solid hsl(var(--secondary)); outline-offset: 6px; }
+
+  /* Franja de promesas: dos filas idénticas; se desplaza media pista y reinicia sin salto */
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee-track { animation: marquee 38s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee { overflow-x: auto; }
+  }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
 
   @keyframes soundwave {
     0% { transform: scale(0.4); opacity: 0.7; }

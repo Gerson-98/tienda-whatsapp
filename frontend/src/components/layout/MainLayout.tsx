@@ -5,12 +5,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 
 export const MainLayout = () => {
   const location = useLocation();
 
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollProgress />
       <Header />
       <AnimatePresence mode="wait">
         <motion.div

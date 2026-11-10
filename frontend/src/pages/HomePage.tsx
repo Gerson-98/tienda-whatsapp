@@ -8,11 +8,13 @@ import { WindowConfigurator } from "@/components/layout/WindowConfigurator";
 import { ProjectGallery } from "@/components/layout/ProjectGallery";
 import { MotionSection } from "@/components/motion/FadeInSection";
 import { WhyVentPro } from "@/components/layout/WhyVentPro";
+import { TrustMarquee } from "@/components/layout/TrustMarquee";
 
 export function HomePage() {
   return (
     <main className="-mt-20">
       <HeroWindow />
+      <TrustMarquee />
 
       {/* Diferenciador: el visitante dibuja su ventana y la manda a cotizar */}
       <WindowConfigurator />
