@@ -262,7 +262,11 @@
 
   /* Franja de promesas: dos filas idénticas; se desplaza media pista y reinicia sin salto */
   @media (prefers-reduced-motion: no-preference) {
-    .marquee-track { animation: marquee 38s linear infinite; }
+    .marquee {
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+    .marquee-track { animation: marquee 60s linear infinite; will-change: transform; }
     .marquee:hover .marquee-track { animation-play-state: paused; }
   }
   @media (prefers-reduced-motion: reduce) {

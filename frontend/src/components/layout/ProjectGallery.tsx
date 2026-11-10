@@ -44,7 +44,7 @@ const Tile = ({ project, index, total }: { project: Project; index: number; tota
           alt={project.name}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out will-change-transform group-hover:scale-[1.07]"
           onError={(e) => {
             const img = e.currentTarget;
             if (img.src.endsWith("/images/placeholder.png")) return;
